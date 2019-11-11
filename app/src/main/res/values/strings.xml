@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">OnlinerNews</string>
+    <string name="auto">АВТО</string>
+    <string name="people">ЛЮДИ</string>
+    <string name="tech">ТЕХНОЛОГИИ</string>
+    <string name="blah_blah_blah">Blah</string>
+</resources>
