@@ -1,10 +1,10 @@
 package siergo_o.onlinernews;
 
 import android.annotation.SuppressLint;
-import android.content.Context;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.webkit.WebView;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 public class DescriptionWebView extends AppCompatActivity {
 

@@ -3,17 +3,19 @@ package siergo_o.onlinernews;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Bundle;
-import android.support.design.widget.TabLayout;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentPagerAdapter;
+import androidx.viewpager.widget.ViewPager;
+
+import com.google.android.material.tabs.TabLayout;
 
 import java.util.Objects;
 
@@ -117,23 +119,5 @@ public class MainActivity extends AppCompatActivity {
     }
 
 }
-
-//    @Override
-//    protected void onCreate(Bundle savedInstanceState) {
-//        super.onCreate(savedInstanceState);
-//        setContentView(R.layout.activity_main);
-//
-//        tabLayout = findViewById(R.id.tablayout);
-//        collapsingToolbarLayout = findViewById(R.id.toolbar);
-//        viewPager = findViewById(R.id.viewpager);
-//
-//        ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
-//        adapter.AddFragment(new FragmentPeople(),getString(R.string.people));
-//        adapter.AddFragment(new FragmentTech(),getString(R.string.tech));
-//        adapter.AddFragment(new FragmentAuto(),getString(R.string.auto));
-//
-//        viewPager.setAdapter(adapter);
-//        tabLayout.setupWithViewPager(viewPager);
-//    }
 
 
