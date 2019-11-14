@@ -1,7 +1,5 @@
 package siergo_o.onlinernews;
 
-import java.io.Serializable;
-
 /**
  * Created by AbbasHassan on 4/14/2017.
  */
@@ -15,7 +13,7 @@ public class NewsItem {
     private String imgUrl;
 
 
-    NewsItem(String title, String date, String description, String url, String imgUrl) {
+    public NewsItem(String title, String date, String description, String url, String imgUrl) {
         this.title = title;
         this.date = date;
         this.description = description;

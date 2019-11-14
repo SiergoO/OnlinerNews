@@ -1,18 +1,21 @@
-package siergo_o.onlinernews;
+package siergo_o.onlinernews.view;
 
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
-import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.AppCompatActivity;
 import android.text.Html;
 import android.widget.TextView;
 
+import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AppCompatActivity;
+
 import java.util.Objects;
 
-public class DescriptionFragment extends AppCompatActivity{
+import siergo_o.onlinernews.R;
+
+public class DescriptionFragment extends AppCompatActivity {
 
     String description;
 
@@ -45,19 +48,5 @@ public class DescriptionFragment extends AppCompatActivity{
         descriptionTW.setText(description);
 
     }
-
-
-    }
-
-    //    private Context context;
-//
-//    @Nullable
-//    @Override
-//    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-//
-//
-//        View view = inflater.inflate(R.layout.news_description_fragment, container, false);
-//        context = view.getContext();
-//        return view;
-//    }
+}
 

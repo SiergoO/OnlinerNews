@@ -1,9 +1,12 @@
-package siergo_o.onlinernews;
+package siergo_o.onlinernews.view;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import androidx.appcompat.app.AppCompatActivity;
+
+import siergo_o.onlinernews.MainActivity;
+import siergo_o.onlinernews.R;
 
 public class SplashActivity extends AppCompatActivity {
     @Override

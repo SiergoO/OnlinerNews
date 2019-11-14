@@ -19,6 +19,9 @@ import com.google.android.material.tabs.TabLayout;
 
 import java.util.Objects;
 
+import siergo_o.onlinernews.view.FragmentAuto;
+import siergo_o.onlinernews.view.FragmentPeople;
+import siergo_o.onlinernews.view.FragmentTech;
 
 
 public class MainActivity extends AppCompatActivity {

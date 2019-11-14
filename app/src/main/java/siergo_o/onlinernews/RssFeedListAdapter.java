@@ -2,7 +2,6 @@ package siergo_o.onlinernews;
 
 import android.content.Context;
 import android.content.Intent;
-import androidx.recyclerview.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,9 +9,13 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
+
+import siergo_o.onlinernews.view.DescriptionWebView;
 
 public class RssFeedListAdapter extends RecyclerView.Adapter<RssFeedListAdapter.FeedModelViewHolder> {
 
@@ -33,7 +36,7 @@ public class RssFeedListAdapter extends RecyclerView.Adapter<RssFeedListAdapter.
 
     }
 
-    RssFeedListAdapter(List<NewsItem> rssFeedModels) {
+    public RssFeedListAdapter(List<NewsItem> rssFeedModels) {
         mRssFeedModels = rssFeedModels;
     }
 

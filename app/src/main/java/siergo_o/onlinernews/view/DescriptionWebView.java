@@ -1,10 +1,12 @@
-package siergo_o.onlinernews;
+package siergo_o.onlinernews.view;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.webkit.WebView;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import siergo_o.onlinernews.R;
 
 public class DescriptionWebView extends AppCompatActivity {
 
