@@ -5,13 +5,13 @@
     android:orientation="vertical">
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-        android:id="@+id/swipe_tech"
+        android:id="@+id/swipe_news"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="12dp">
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv_tech"
+            android:id="@+id/rv_news"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 

@@ -1,4 +1,4 @@
-package siergo_o.onlinernews;
+package siergo_o.onlinernews.adapter;
 
 import android.content.Context;
 import android.content.Intent;
@@ -15,6 +15,8 @@ import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
+import siergo_o.onlinernews.NewsItem;
+import siergo_o.onlinernews.R;
 import siergo_o.onlinernews.view.DescriptionWebView;
 
 public class RssFeedListAdapter extends RecyclerView.Adapter<RssFeedListAdapter.FeedModelViewHolder> {

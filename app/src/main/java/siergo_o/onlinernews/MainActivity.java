@@ -19,9 +19,7 @@ import com.google.android.material.tabs.TabLayout;
 
 import java.util.Objects;
 
-import siergo_o.onlinernews.view.FragmentAuto;
-import siergo_o.onlinernews.view.FragmentPeople;
-import siergo_o.onlinernews.view.FragmentTech;
+import siergo_o.onlinernews.view.FragmentNewsHolder;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -32,6 +30,7 @@ public class MainActivity extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
 
         ViewPager viewPager = findViewById(R.id.viewpager);
         viewPager.setOffscreenPageLimit(3);
@@ -48,9 +47,7 @@ public class MainActivity extends AppCompatActivity {
             Objects.requireNonNull(tab).setCustomView(pagerAdapter.getTabView(i));
         }
 
-
     }
-
 
     @Override
     public void onResume() {
@@ -71,7 +68,7 @@ public class MainActivity extends AppCompatActivity {
 
     class PagerAdapter extends FragmentPagerAdapter {
 
-        String tabTitles[] = {"Техно", "Люди", "Авто"};
+        String[] tabTitles = {"Техно", "Люди", "Авто"};
         TextView tv;
         View tab;
         Context context;
@@ -91,11 +88,11 @@ public class MainActivity extends AppCompatActivity {
 
             switch (position) {
                 case 0:
-                    return new FragmentTech();
+                    return new FragmentNewsHolder("https://tech.onliner.by/feed");
                 case 1:
-                    return new FragmentPeople();
+                    return new FragmentNewsHolder("https://people.onliner.by/feed");
                 case 2:
-                    return new FragmentAuto();
+                    return new FragmentNewsHolder("https://auto.onliner.by/feed");
             }
 
             return null;
@@ -115,10 +112,6 @@ public class MainActivity extends AppCompatActivity {
             tv.setText(tabTitles[position]);
             return tab;
         }
-    }
-
-    public Context getContext() {
-        return getApplicationContext();
     }
 
 }
