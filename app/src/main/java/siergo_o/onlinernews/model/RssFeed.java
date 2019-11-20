@@ -7,7 +7,7 @@ import org.simpleframework.xml.Root;
 public class RssFeed {
 
     @Element(name = "channel")
-    public RssChannel channel;
+    public RssNewsChannel channel;
 
 
     @Override
@@ -15,11 +15,11 @@ public class RssFeed {
         return "RssFeed [channel=" + channel + "]";
     }
 
-    public RssChannel getChannel() {
+    public RssNewsChannel getChannel() {
         return channel;
     }
 
-    public void setChannel(RssChannel channel) {
+    public void setChannel(RssNewsChannel channel) {
         this.channel = channel;
     }
 }

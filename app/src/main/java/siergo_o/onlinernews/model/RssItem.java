@@ -1,6 +1,5 @@
 package siergo_o.onlinernews.model;
 
-import org.simpleframework.xml.Attribute;
 import org.simpleframework.xml.Element;
 import org.simpleframework.xml.Root;
 
@@ -21,14 +20,14 @@ public class RssItem {
     @Element(name = "description")
     private String description;
 
-    @Element(name = "media:thumbnail")
-    private MediaThumbnail mediaThumbnail;
-
-    public class MediaThumbnail {
-
-        @Attribute(name = "url")
-        private String imageUrl;
-    }
+//    @XmlAnyElement(name = "media:thumbnail")
+//    private MediaThumbnail mediaThumbnail;
+//
+//    public class MediaThumbnail {
+//
+//        @Attribute(name = "url")
+//        private String imageUrl;
+//    }
 
     @Override
     public String toString() {
@@ -37,6 +36,7 @@ public class RssItem {
     }
 
     public String getTitle() {
+        title = title.replaceAll("&nbsp;", " ");
         return title;
     }
 
@@ -53,6 +53,7 @@ public class RssItem {
     }
 
     public String getPubDate() {
+        pubDate = pubDate.replaceAll("[+]0300", "");
         return pubDate;
     }
 
@@ -76,11 +77,11 @@ public class RssItem {
         this.description = description;
     }
 
-    public MediaThumbnail getMediaThumbnail() {
-        return mediaThumbnail;
-    }
-
-    public void setMediaThumbnail(MediaThumbnail mediaThumbnail) {
-        this.mediaThumbnail = mediaThumbnail;
-    }
+//    public MediaThumbnail getMediaThumbnail() {
+//        return mediaThumbnail;
+//    }
+//
+//    public void setMediaThumbnail(MediaThumbnail mediaThumbnail) {
+//        this.mediaThumbnail = mediaThumbnail;
+//    }
 }

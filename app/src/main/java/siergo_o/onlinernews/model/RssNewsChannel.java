@@ -7,7 +7,7 @@ import org.simpleframework.xml.Root;
 import java.util.List;
 
 @Root(name = "channel", strict = false)
-public class RssChannel
+public class RssNewsChannel
 {
     @Element (name = "link")
     private String link;

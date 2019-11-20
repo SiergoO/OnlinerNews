@@ -9,7 +9,7 @@ public class RssService {
     private Retrofit mRetrofit;
     private static final String BASE_URL = "https://people.onliner.by/";
 
-    private RssService(){
+    public RssService(){
         mRetrofit = new Retrofit.Builder().baseUrl(BASE_URL)
                 .addConverterFactory(SimpleXmlConverterFactory.create()).build();
     }
@@ -25,5 +25,7 @@ public class RssService {
         return mRetrofit.create(OnlinerAPI.class);
     }
 
-
+    public Retrofit getmRetrofit() {
+        return mRetrofit;
+    }
 }

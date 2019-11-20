@@ -1,11 +1,13 @@
 package siergo_o.onlinernews.view;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
@@ -13,7 +15,6 @@ import androidx.fragment.app.ListFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -30,46 +31,64 @@ public class FragmentNewsHolder extends ListFragment {
 
     RecyclerView recyclerView;
     List<RssItem> posts;
+    Context context;
+
+    @Nullable
+    @Override
+    public Context getContext() {
+        return context;
+    }
 
     private Fragment fragmentNews;
     private String urlLink;
+    private RecyclerView.Adapter adapter;
 
     public String getUrlLink() {
         return urlLink;
     }
 
-    public FragmentNewsHolder() {
-    }
-
-    public FragmentNewsHolder(String urlLink) {
-        this.urlLink = urlLink;
-    }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, final ViewGroup container, Bundle savedInstanceState) {
 
-        View rootView = inflater.inflate(R.layout.news_fragment, container, false);
-        View itemView = inflater.inflate(R.layout.news_list_item_layout, container, false);
+        final View rootView = inflater.inflate(R.layout.news_fragment, container, false);
+        final View itemView = inflater.inflate(R.layout.news_list_item_layout, container, false);
 
-        recyclerView = rootView.findViewById(R.id.rv_news);
+
         CardView cvPeople = itemView.findViewById(R.id.cardview);
-//        swipeNews = rootView.findViewById(R.id.swipe_news);
-
+        recyclerView = rootView.findViewById(R.id.rv_news);
         recyclerView.setHasFixedSize(true);
-        PostsAdapter adapter = new PostsAdapter(new ArrayList<RssItem>());
-        recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
+//        posts = new ArrayList<>();
+
+        adapter = null;
         recyclerView.setAdapter(adapter);
 
-        RssService.getInstance().getOnlinerAPI().getFeed().enqueue(new Callback<RssFeed>() {
+        Call<RssFeed> call = RssService.getInstance().getOnlinerAPI().getFeed();
+
+        call.enqueue(new Callback<RssFeed>() {
             @Override
             public void onResponse(Call<RssFeed> call, Response<RssFeed> response) {
+
+                posts = response.body().getChannel().getItem();
+                PostsAdapter adapter = new PostsAdapter(posts, getActivity());
+
+                boolean ss = posts.isEmpty();
+                for (int i = 0; i < posts.size(); i++) {
+                    Log.e("J", posts.get(i).toString());
+//                    Log.e("THIS", posts.get(i).toString());
+                }
+
+
                 if (response.isSuccessful()) {
-                    Log.e("123", "ssd");
+                    Log.e("123", response.body().getChannel().getItem().get(0).toString());
+
                 } else {
                     Log.e("321", "????????????");
                 }
+
+                recyclerView.setAdapter(adapter);
             }
 
             @Override
@@ -81,8 +100,6 @@ public class FragmentNewsHolder extends ListFragment {
                 }
             }
         });
-
-
 
 
         cvPeople.setOnClickListener(new View.OnClickListener() {
@@ -97,8 +114,6 @@ public class FragmentNewsHolder extends ListFragment {
 
         return rootView;
     }
-
-
 
 
 }
