@@ -25,11 +25,13 @@ import siergo_o.onlinernews.view.FragmentNewsHolder;
 public class MainActivity extends AppCompatActivity {
 
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
 
 
         ViewPager viewPager = findViewById(R.id.viewpager);
@@ -65,6 +67,8 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         return super.onOptionsItemSelected(item);
     }
+
+
 
     class PagerAdapter extends FragmentPagerAdapter {
 
