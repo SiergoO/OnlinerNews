@@ -42,9 +42,9 @@ public class FragmentNewsHolder extends ListFragment {
     private SwipeRefreshLayout mSwipeRefreshLayout;
 
 
-    public FragmentNewsHolder(String urlLink, int position) {
+    public FragmentNewsHolder(String urlLink) {
         this.urlLink = urlLink;
-        this.position = position;
+
 
     }
 
@@ -55,14 +55,7 @@ public class FragmentNewsHolder extends ListFragment {
     }
 
     public String getUrlLink() {
-        switch (position) {
-            case 0:
-                return "https://tech.onliner.by/";
-            case 1:
-                return "https://people.onliner.by/";
-            case 2:
-                return "https://auto.onliner.by/";
-        }
+
         return urlLink;
     }
 
@@ -96,7 +89,7 @@ public class FragmentNewsHolder extends ListFragment {
         cvPeople.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                fragmentNews = new FragmentNewsHolder(urlLink, position);
+                fragmentNews = new FragmentNewsHolder(urlLink);
                 FragmentTransaction transaction = Objects.requireNonNull(getFragmentManager()).beginTransaction();
                 transaction.replace(R.id.viewpager, fragmentNews);
                 transaction.commit();
