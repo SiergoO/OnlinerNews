@@ -88,11 +88,11 @@ public class MainActivity extends AppCompatActivity {
 
             switch (position) {
                 case 0:
-                    return new FragmentNewsHolder();
+                    return new FragmentNewsHolder("https://tech.onliner.by/", position);
                 case 1:
-                    return new FragmentNewsHolder();
+                    return new FragmentNewsHolder("https://people.onliner.by/", position);
                 case 2:
-                    return new FragmentNewsHolder();
+                    return new FragmentNewsHolder("https://auto.onliner.by/", position);
             }
 
             return null;

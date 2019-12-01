@@ -5,20 +5,22 @@ import retrofit2.converter.simplexml.SimpleXmlConverterFactory;
 
 public class RssService {
 
-    private static RssService mInstance;
     private Retrofit mRetrofit;
-    private static final String BASE_URL = "https://people.onliner.by/";
+    private String urlLink;
 
-    public RssService(){
-        mRetrofit = new Retrofit.Builder().baseUrl(BASE_URL)
+    public RssService(String urlLink){
+        mRetrofit = new Retrofit.Builder().baseUrl(urlLink)
                 .addConverterFactory(SimpleXmlConverterFactory.create()).build();
     }
 
-    public static RssService getInstance(){
-        if (mInstance == null) {
-            mInstance = new RssService();
-        }
-        return mInstance;
+//    public RssService(){
+//        mRetrofit = new Retrofit.Builder().baseUrl(urlLink)
+//                .addConverterFactory(SimpleXmlConverterFactory.create()).build();
+//    }
+
+    public static RssService getInstance(String urlLink){
+
+        return new RssService(urlLink);
     }
 
     public OnlinerAPI getOnlinerAPI(){
@@ -28,4 +30,14 @@ public class RssService {
     public Retrofit getmRetrofit() {
         return mRetrofit;
     }
+
+    public String getUrlLink() {
+        return urlLink;
+    }
+
+    public void setUrlLink(String urlLink) {
+
+        this.urlLink = urlLink;
+    }
+
 }

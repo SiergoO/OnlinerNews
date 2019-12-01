@@ -29,9 +29,20 @@ import siergo_o.onlinernews.model.RssService;
 
 public class FragmentNewsHolder extends ListFragment {
 
-    RecyclerView recyclerView;
-    List<RssItem> posts;
-    Context context;
+    private RecyclerView recyclerView;
+    private List<RssItem> posts;
+    private Context context;
+    private Fragment fragmentNews;
+    private String urlLink;
+    private RecyclerView.Adapter adapter;
+    private int position;
+
+
+    public FragmentNewsHolder(String urlLink, int position) {
+        this.urlLink = urlLink;
+        this.position = position;
+
+    }
 
     @Nullable
     @Override
@@ -39,17 +50,20 @@ public class FragmentNewsHolder extends ListFragment {
         return context;
     }
 
-    private Fragment fragmentNews;
-    private String urlLink;
-    private RecyclerView.Adapter adapter;
-
     public String getUrlLink() {
+        switch (position){
+            case 0: return "https://tech.onliner.by/";
+            case 1: return "https://people.onliner.by/";
+            case 2: return "https://auto.onliner.by/";
+        }
         return urlLink;
     }
 
 
     @Override
     public View onCreateView(LayoutInflater inflater, final ViewGroup container, Bundle savedInstanceState) {
+
+
 
         final View rootView = inflater.inflate(R.layout.news_fragment, container, false);
         final View itemView = inflater.inflate(R.layout.news_list_item_layout, container, false);
@@ -60,12 +74,12 @@ public class FragmentNewsHolder extends ListFragment {
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-//        posts = new ArrayList<>();
+
 
         adapter = null;
         recyclerView.setAdapter(adapter);
 
-        Call<RssFeed> call = RssService.getInstance().getOnlinerAPI().getFeed();
+        Call<RssFeed> call = RssService.getInstance(this.getUrlLink()).getOnlinerAPI().getFeed();
 
         call.enqueue(new Callback<RssFeed>() {
             @Override
@@ -74,7 +88,6 @@ public class FragmentNewsHolder extends ListFragment {
                 posts = response.body().getChannel().getItem();
                 PostsAdapter adapter = new PostsAdapter(posts, getActivity());
 
-                boolean ss = posts.isEmpty();
                 for (int i = 0; i < posts.size(); i++) {
                     Log.e("J", posts.get(i).toString());
 //                    Log.e("THIS", posts.get(i).toString());
@@ -105,7 +118,7 @@ public class FragmentNewsHolder extends ListFragment {
         cvPeople.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                fragmentNews = new FragmentNewsHolder();
+                fragmentNews = new FragmentNewsHolder(urlLink, position);
                 FragmentTransaction transaction = Objects.requireNonNull(getFragmentManager()).beginTransaction();
                 transaction.replace(R.id.viewpager, fragmentNews);
                 transaction.commit();

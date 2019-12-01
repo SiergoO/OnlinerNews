@@ -26,10 +26,10 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
 
     private Context context;
     private List<RssItem> posts;
-    String imgUrl;
+    private String imgUrl;
 
     public Context getContext() {
-        return context;
+        return this.context;
     }
 
     public PostsAdapter(List<RssItem> posts, Context context) {
@@ -53,7 +53,7 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
         Matcher imgUrlMatcher = imgUrlPattern.matcher(posts.get(position).getDescription());
 
         if (imgUrlMatcher.find()) {
-            imgUrl= Objects.requireNonNull(imgUrlMatcher.group(1)).replace("thumbnail", "1400x5616");; // this variable should contain the link image URL
+            imgUrl= Objects.requireNonNull(imgUrlMatcher.group(1)).replace("thumbnail", "1400x5616"); // this variable should contain the link image URL
         }
 
 
@@ -88,7 +88,7 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
         TextView post,site;
         ImageView image;
 
-        public ViewHolder(View itemView) {
+        ViewHolder(View itemView) {
             super(itemView);
             post = itemView.findViewById(R.id.textview_1);
             site = itemView.findViewById(R.id.textview_2);
