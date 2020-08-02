@@ -63,7 +63,7 @@ public class FragmentNewsHolder extends ListFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, final ViewGroup container, Bundle savedInstanceState) {
 
-
+        setRetainInstance(true);
         final View rootView = inflater.inflate(R.layout.news_fragment, container, false);
         final View itemView = inflater.inflate(R.layout.news_list_item_layout, container, false);
         mSwipeRefreshLayout = rootView.findViewById(R.id.swipe_container);

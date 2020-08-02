@@ -25,13 +25,11 @@ import siergo_o.onlinernews.view.FragmentNewsHolder;
 public class MainActivity extends AppCompatActivity {
 
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
 
 
         ViewPager viewPager = findViewById(R.id.viewpager);
@@ -68,8 +66,6 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-
-
     class PagerAdapter extends FragmentPagerAdapter {
 
         String[] tabTitles = {"Техно", "Люди", "Авто"};
@@ -92,11 +88,11 @@ public class MainActivity extends AppCompatActivity {
 
             switch (position) {
                 case 0:
-                    return new FragmentNewsHolder("https://tech.onliner.by/");
+                    return new FragmentNewsHolder("https://tech.onliner.by/", position);
                 case 1:
-                    return new FragmentNewsHolder("https://people.onliner.by/");
+                    return new FragmentNewsHolder("https://people.onliner.by/", position);
                 case 2:
-                    return new FragmentNewsHolder("https://auto.onliner.by/");
+                    return new FragmentNewsHolder("https://auto.onliner.by/", position);
             }
 
             return null;

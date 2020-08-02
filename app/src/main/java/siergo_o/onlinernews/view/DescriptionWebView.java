@@ -30,4 +30,9 @@ public class DescriptionWebView extends AppCompatActivity {
         }
         webView.loadUrl(Url);
     }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+    }
 }
