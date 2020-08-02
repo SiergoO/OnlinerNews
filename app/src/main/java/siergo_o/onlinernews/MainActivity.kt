@@ -40,20 +40,12 @@ class MainActivity: AppCompatActivity() {
             val tab = tabLayout.getTabAt(i)
             tab?.customView = pagerAdapter.getTabView(i)
         }
-//        // Iterate over all tabs and set the custom view
-//        for (int i = 0; i < tabLayout.getTabCount(); i++) {
-//            TabLayout.Tab tab = tabLayout.getTabAt(i);
-//            Objects.requireNonNull(tab).setCustomView(pagerAdapter.getTabView(i));
-//        }
-
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.menu_main, menu)
         return true
     }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean = super.onOptionsItemSelected(item)
 
     inner class PagerAdapter(fm: FragmentManager, private val context: Context): FragmentPagerAdapter(fm) {
 
