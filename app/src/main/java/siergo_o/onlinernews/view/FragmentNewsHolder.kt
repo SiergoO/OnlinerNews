@@ -93,7 +93,7 @@ class FragmentNewsHolder(private val urlLink: String) : ListFragment() {
 
     fun getParcedData() {
 
-        val call: Call<RssFeed> = RssService.getInstance(this.getUrlLink()).onlinerAPI.feed
+        val call: Call<RssFeed> = RssService.getInstance(this.getUrlLink()).onlinerApi.feed
 
         call.enqueue(object : Callback<RssFeed> {
             override fun onFailure(call: Call<RssFeed>, t: Throwable) {
@@ -105,7 +105,7 @@ class FragmentNewsHolder(private val urlLink: String) : ListFragment() {
             }
 
             override fun onResponse(call: Call<RssFeed>, response: Response<RssFeed>) {
-                val posts = response.body()?.getChannel()?.getItem()
+                val posts = response.body()?.channel?.item
                 val adapter = PostsAdapter(posts, activity)
 
                 for (i in 0 until posts!!.size) {
