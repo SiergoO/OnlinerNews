@@ -13,5 +13,4 @@ class RssService(private val urlLink: String) {
             return RssService(urlLink)
         }
     }
-
 }

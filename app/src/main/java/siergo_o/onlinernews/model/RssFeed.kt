@@ -6,7 +6,7 @@ import org.simpleframework.xml.Root
 @Root(name = "rss", strict = false)
 
 class RssFeed {
-    @Element(name = "channel")
+    @field:Element(name = "channel")
     var channel: RssNewsChannel? = null
 
     override fun toString(): String {

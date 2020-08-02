@@ -5,19 +5,19 @@ import org.simpleframework.xml.Root
 
 @Root(name = "item", strict = false)
 class RssItem {
-    @Element(name = "title")
+    @field:Element(name = "title")
     private var title: String? = null
 
-    @Element(name = "link")
+    @field:Element(name = "link")
     var link: String? = null
 
-    @Element(name = "pubDate")
+    @field:Element(name = "pubDate")
     private var pubDate: String? = null
 
-    @Element(name = "category")
+    @field:Element(name = "category")
     var category: String? = null
 
-    @Element(name = "description")
+    @field:Element(name = "description")
     var description: String? = null
 
     override fun toString(): String = ("RssItem [title=" + title + ", link=" + link + ", pubDate=" + pubDate + ", category=" + category

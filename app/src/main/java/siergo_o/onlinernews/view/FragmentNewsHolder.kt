@@ -27,13 +27,14 @@ import siergo_o.onlinernews.model.RssService
 class FragmentNewsHolder(private val urlLink: String) : ListFragment() {
 
     companion object {
-        private val TAG = "MY";
+        private val TAG = "MY"
     }
 
     private var recyclerView: RecyclerView? = null
     private val posts: List<RssItem>? = null
     private val context: Context? = null
     private var fragmentNews: Fragment? = null
+    private var postAdapter: PostsAdapter? = null
     private val position: Int? = null
     private var mSwipeRefreshLayout: SwipeRefreshLayout? = null
 
@@ -47,11 +48,6 @@ class FragmentNewsHolder(private val urlLink: String) : ListFragment() {
         val itemView = inflater.inflate(R.layout.news_list_item_layout, container, false)
         mSwipeRefreshLayout = rootView.findViewById(R.id.swipe_container)
         recyclerView = rootView.findViewById(R.id.rv_news)
-        recyclerView?.setHasFixedSize(true)
-        recyclerView?.layoutManager = LinearLayoutManager(activity)
-        recyclerView?.adapter = PostsAdapter(posts, context)
-
-        getParcedData()
 
         mSwipeRefreshLayout?.setOnRefreshListener { FetchFeedTask().execute() }
 
@@ -62,6 +58,16 @@ class FragmentNewsHolder(private val urlLink: String) : ListFragment() {
             transaction.commit()
         }
         return rootView
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        postAdapter = PostsAdapter(context)
+        recyclerView?.setHasFixedSize(true)
+        recyclerView?.layoutManager = LinearLayoutManager(activity)
+        recyclerView?.adapter = postAdapter
+        getParcedData()
+
+        super.onViewCreated(view, savedInstanceState)
     }
 
     @SuppressLint("StaticFieldLeak")
@@ -84,7 +90,7 @@ class FragmentNewsHolder(private val urlLink: String) : ListFragment() {
         override fun onPostExecute(success: Boolean) {
             mSwipeRefreshLayout!!.isRefreshing = false
             if (success) {
-                recyclerView?.adapter = PostsAdapter(posts, activity)
+                recyclerView?.adapter = postAdapter // TODO adapter
             } else {
                 Log.e(TAG, "Error")
             }
@@ -93,31 +99,29 @@ class FragmentNewsHolder(private val urlLink: String) : ListFragment() {
 
     fun getParcedData() {
 
-        val call: Call<RssFeed> = RssService.getInstance(this.getUrlLink()).onlinerApi.feed
+        val call: Call<RssFeed?> = RssService.getInstance(this.getUrlLink()).onlinerApi.feed!!
 
-        call.enqueue(object : Callback<RssFeed> {
-            override fun onFailure(call: Call<RssFeed>, t: Throwable) {
+        call.enqueue(object : Callback<RssFeed?> {
+            override fun onFailure(call: Call<RssFeed?>, t: Throwable) {
                 if (call.isCanceled) {
                     println("Call was cancelled forcefully")
                 } else {
-                    println("Network Error :: " + t.localizedMessage)
+                    Log.e("KK", t.toString())
                 }
             }
 
-            override fun onResponse(call: Call<RssFeed>, response: Response<RssFeed>) {
-                val posts = response.body()?.channel?.item
-                val adapter = PostsAdapter(posts, activity)
-
-                for (i in 0 until posts!!.size) {
-                    Log.e("J", posts[i].toString())
+            override fun onResponse(call: Call<RssFeed?>, response: Response<RssFeed?>) {
+                val posts = response.body()?.channel?.items?: listOf()
+                for (element in posts) {
+                    Log.e("J", element.toString())
                 }
                 if (response.isSuccessful) {
+                    postAdapter!!.set(posts)
                     Log.e("123", posts[0].toString())
 
                 } else {
                     Log.e("321", "????????????")
                 }
-                recyclerView!!.adapter = adapter
             }
         })
     }
