@@ -1,10 +1,10 @@
-package siergo_o.onlinernews.model
+package siergo_o.onlinernews.data.rest.model
 
 import org.simpleframework.xml.Element
 import org.simpleframework.xml.Root
 
 @Root(name = "item", strict = false)
-class RssItem {
+class NetRssItem {
     @field:Element(name = "title")
     private var title: String? = null
 

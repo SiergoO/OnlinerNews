@@ -11,8 +11,8 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Picasso
 import siergo_o.onlinernews.R
-import siergo_o.onlinernews.model.RssItem
-import siergo_o.onlinernews.view.DescriptionWebView
+import siergo_o.onlinernews.domain.news.model.RssItem
+import siergo_o.onlinernews.presentation.base.DescriptionWebView
 import java.util.regex.Pattern
 
 class PostsAdapter(private val context: Context?) : RecyclerView.Adapter<PostsAdapter.ViewHolder>() {
@@ -34,8 +34,8 @@ class PostsAdapter(private val context: Context?) : RecyclerView.Adapter<PostsAd
             imgUrl = imgUrlMatcher.group(1)?.replace("thumbnail", "1400x5616") // this variable should contain the link image URL
         }
         Picasso.get().load(imgUrl).into(newsImage)
-        holder.post.text = post.getTitle()
-        holder.site.text = post.getPubDate()
+        holder.post.text = post.title
+        holder.site.text = post.pubDate
 
         holder.itemView.setOnClickListener {
             val holderContext = it.context

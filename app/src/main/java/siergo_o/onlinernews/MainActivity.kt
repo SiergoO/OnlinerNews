@@ -5,19 +5,16 @@ import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.Menu
-import android.view.MenuItem
 import android.view.View
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.iterator
 import androidx.core.view.size
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
 import androidx.viewpager.widget.ViewPager
 import com.google.android.material.tabs.TabLayout
-import siergo_o.onlinernews.view.FragmentNewsHolder
-import java.util.*
+import siergo_o.onlinernews.presentation.screen.home.NewsFragment
 
 
 class MainActivity: AppCompatActivity() {
@@ -57,10 +54,10 @@ class MainActivity: AppCompatActivity() {
 
         override fun getItem(position: Int): Fragment =
                 when (position) {
-                    0 -> FragmentNewsHolder("https://tech.onliner.by/")
-                    1 -> FragmentNewsHolder("https://people.onliner.by/")
-                    2 -> FragmentNewsHolder("https://auto.onliner.by//")
-                    else -> FragmentNewsHolder("https://tech.onliner.by/")
+                    0 -> NewsFragment("https://tech.onliner.by/")
+                    1 -> NewsFragment("https://people.onliner.by/")
+                    2 -> NewsFragment("https://auto.onliner.by//")
+                    else -> NewsFragment("https://tech.onliner.by/")
                 }
 
         override fun getPageTitle(position: Int): CharSequence? = tabTitles[position]
