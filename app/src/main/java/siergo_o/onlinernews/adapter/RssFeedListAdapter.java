@@ -44,7 +44,7 @@
 //    @Override
 //    public FeedModelViewHolder onCreateViewHolder(ViewGroup parent, int type) {
 //        View v = LayoutInflater.from(parent.getContext())
-//                .inflate(R.layout.news_list_item_layout, parent, false);
+//                .inflate(R.layout.item_news, parent, false);
 //        return new FeedModelViewHolder(v);
 //    }
 //

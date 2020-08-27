@@ -21,7 +21,7 @@ class PostsAdapter(private val context: Context?) : RecyclerView.Adapter<PostsAd
     private var posts: List<RssItem>? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder =
-            ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.news_list_item_layout, parent, false))
+            ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_news, parent, false))
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val post: RssItem? = posts?.get(position)

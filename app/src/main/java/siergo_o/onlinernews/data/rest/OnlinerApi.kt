@@ -5,6 +5,6 @@ import retrofit2.http.GET
 import siergo_o.onlinernews.data.rest.model.NetRssFeed
 
 interface OnlinerApi {
-    @get:GET("/feed")
-    val feed: Call<NetRssFeed?>?
+    @GET("/feed")
+    fun getFeed(): Call<NetRssFeed?>?
 }

@@ -5,10 +5,11 @@ import com.ipictheaters.ipic.presentation.utils.task.SingleResultTask
 import io.reactivex.android.schedulers.AndroidSchedulers
 import siergo_o.onlinernews.data.rest.model.toDomainModel
 import siergo_o.onlinernews.domain.news.interactor.LoadNewsInteractor
+import siergo_o.onlinernews.domain.news.model.RssFeed
 import siergo_o.onlinernews.domain.news.model.RssItem
 import siergo_o.onlinernews.presentation.utils.asRxSingle
 
-class NewsFragmentPresenter(private val loadNewsInteractor: LoadNewsInteractor) : BaseMvpPresenter<NewsFragmentContract.Ui, NewsFragmentContract.Presenter.State>(), NewsFragmentContract.Presenter {
+class NewsFragmentPresenter(private val tab: NewsFragmentContract.TAB, private val loadNewsInteractor: LoadNewsInteractor) : BaseMvpPresenter<NewsFragmentContract.Ui, NewsFragmentContract.Presenter.State>(), NewsFragmentContract.Presenter {
 
     companion object {
         private const val TAG = "DiningChecksPaymentResultFragmentPresenter"
@@ -20,50 +21,35 @@ class NewsFragmentPresenter(private val loadNewsInteractor: LoadNewsInteractor) 
         taskLoadNews.start(LoadNewsInteractor.Param(), Unit)
     }
 
+    override fun newsRefreshed() {
+        taskLoadNews.start(LoadNewsInteractor.Param(), Unit)
+        updateUi(0)
+    }
+
     private val taskLoadNews = loadNewsTask()
-    private var feedList: List<RssItem>? = null
+    private var feedList: List<RssFeed>? = null
 
     private fun updateUi(flags: Int) {
         if (0 != (flags and FLAG_SETUP_UI)) {
-            ui.setData(feedList ?: emptyList())
+            if (feedList != null) {
+                ui.setData(
+                        when (tab) {
+                            NewsFragmentContract.TAB.TECH -> feedList!![0].channel.items!!.map { it.toDomainModel() }
+                            NewsFragmentContract.TAB.PEOPLE -> feedList!![1].channel.items!!.map { it.toDomainModel() }
+                            NewsFragmentContract.TAB.AUTO -> feedList!![2].channel.items!!.map { it.toDomainModel() }
+                        }
+                )
+            }
         }
+        ui.showLoading(taskLoadNews.isRunning())
     }
-
-//    override fun getParcedData(link: String) {
-//
-//        val call: Call<NetRssFeed?> = RssService.getInstance(link).onlinerApi.feed!!
-//
-//        call.enqueue(object : Callback<NetRssFeed?> {
-//            override fun onFailure(call: Call<NetRssFeed?>, t: Throwable) {
-//                if (call.isCanceled) {
-//                    println("Call was cancelled forcefully")
-//                } else {
-//                    Log.e("KK", t.toString())
-//                }
-//            }
-//
-//            override fun onResponse(call: Call<NetRssFeed?>, response: Response<NetRssFeed?>) {
-//                val posts = response.body()?.channel?.items ?: listOf()
-//                for (element in posts) {
-//                    Log.e("J", element.toString())
-//                }
-//                if (response.isSuccessful) {
-//                    ui.setData(posts)
-//                    Log.e("123", posts[0].toString())
-//
-//                } else {
-//                    Log.e("321", "????????????")
-//                }
-//            }
-//        })
-//    }
 
     private fun handleDiningCheckReceipt(
             data: LoadNewsInteractor.Result?,
             error: Throwable?
     ) {
         if (data != null) {
-            feedList = data.rssFeed.channel?.items?.map { it.toDomainModel() }
+            feedList = data.feed
         } else if (error != null) {
             ui.showToast()
         }

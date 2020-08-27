@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@color/white"
     android:orientation="vertical"
-    tools:context=".MainActivity">
+    tools:context=".presentation.screen.MainActivity">
 
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
@@ -43,16 +43,17 @@
             app:tabTextColor="@color/tabindicatorcolor">
 
         </com.google.android.material.tabs.TabLayout>
+
     </com.google.android.material.appbar.AppBarLayout>
 
 
-    <androidx.viewpager.widget.ViewPager
+    <androidx.viewpager2.widget.ViewPager2
 
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         android:id="@+id/viewpager"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-    </androidx.viewpager.widget.ViewPager>
+    </androidx.viewpager2.widget.ViewPager2>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
