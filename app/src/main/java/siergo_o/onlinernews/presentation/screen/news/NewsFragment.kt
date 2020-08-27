@@ -1,62 +1,45 @@
-package siergo_o.onlinernews.presentation.screen.home;
+package siergo_o.onlinernews.presentation.screen.news;
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.cardview.widget.CardView
-import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.ipictheaters.ipic.presentation.base.BaseMvpFragment
 import com.softeq.android.mvp.PresenterStateHolder
 import com.softeq.android.mvp.VoidPresenterStateHolder
-import siergo_o.onlinernews.App
 import siergo_o.onlinernews.R
 import siergo_o.onlinernews.adapter.PostsAdapter
-import siergo_o.onlinernews.domain.news.interactor.LoadNewsInteractorImpl
+import siergo_o.onlinernews.data.rest.model.toDomainModel
+import siergo_o.onlinernews.domain.news.model.RssFeed
 import siergo_o.onlinernews.domain.news.model.RssItem
 
-class NewsFragment (private val tab: NewsFragmentContract.TAB) : BaseMvpFragment<NewsFragmentContract.Ui, NewsFragmentContract.Presenter.State, NewsFragmentContract.Presenter>(), NewsFragmentContract.Ui {
-
-    companion object {
-        private val TAG = "MY"
-    }
+class NewsFragment(private val tab: NewsFragmentContract.TAB, private val feed: RssFeed) : BaseMvpFragment<NewsFragmentContract.Ui, NewsFragmentContract.Presenter.State, NewsFragmentContract.Presenter>(), NewsFragmentContract.Ui {
 
     private var recyclerView: RecyclerView? = null
-    private var fragmentNews: Fragment? = null
-    private val position: Int? = null
-    private var mSwipeRefreshLayout: SwipeRefreshLayout? = null
     private var postAdapter: PostsAdapter? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        retainInstance = true
-        val rootView = inflater.inflate(R.layout.fragment_news, container, false)
-        val itemView = inflater.inflate(R.layout.item_news, container, false)
-        mSwipeRefreshLayout = rootView.findViewById(R.id.swipe_container)
+        val rootView = inflater.inflate(R.layout.fragment_news_content, container, false)
         recyclerView = rootView.findViewById(R.id.rv_news)
-        mSwipeRefreshLayout?.setOnRefreshListener { presenter.newsRefreshed() }
-
         return rootView
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         postAdapter = PostsAdapter(context)
-        recyclerView?.setHasFixedSize(true)
-        recyclerView?.layoutManager = LinearLayoutManager(activity)
-        recyclerView?.adapter = postAdapter
-
+        postAdapter!!.set(feed.channel.items!!.map { it.toDomainModel() })
+        recyclerView!!.apply {
+            setHasFixedSize(true)
+            layoutManager = LinearLayoutManager(activity)
+            adapter = postAdapter
+        }
         super.onViewCreated(view, savedInstanceState)
     }
 
     override fun setData(posts: List<RssItem>) {
-        postAdapter?.set(posts)
-    }
 
-    override fun showLoading(isShown: Boolean) {
-        mSwipeRefreshLayout?.isRefreshing = isShown
     }
 
     override fun showToast() {
@@ -69,7 +52,5 @@ class NewsFragment (private val tab: NewsFragmentContract.TAB) : BaseMvpFragment
     override fun getUi(): NewsFragmentContract.Ui = this
 
     override fun createPresenter(): NewsFragmentContract.Presenter =
-            NewsFragmentPresenter(
-                    tab,
-                    LoadNewsInteractorImpl(App.instance.newsRepository))
+            NewsFragmentPresenter(tab)
 }
