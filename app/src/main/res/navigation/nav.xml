@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto" android:id="@+id/nav"
+    app:startDestination="@id/homeFragment">
+
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="siergo_o.onlinernews.presentation.screen.home.HomeFragment"
+        android:label="HomeFragment" >
+        <action
+            android:id="@+id/navToDescriptionWebView"
+            app:destination="@id/newsDetailsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/newsDetailsFragment"
+        android:name="siergo_o.onlinernews.presentation.base.NewsDetailsFragment"
+        android:label="NewsDetailsFragment" />
+</navigation>

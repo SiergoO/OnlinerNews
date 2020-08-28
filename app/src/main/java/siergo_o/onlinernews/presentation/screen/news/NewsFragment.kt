@@ -28,7 +28,7 @@ class NewsFragment(private val tab: NewsFragmentContract.TAB, private val feed: 
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        postAdapter = PostsAdapter(context)
+        postAdapter = PostsAdapter()
         postAdapter!!.set(feed.channel.items!!.map { it.toDomainModel() })
         recyclerView!!.apply {
             setHasFixedSize(true)

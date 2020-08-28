@@ -25,7 +25,7 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".presentation.base.DescriptionWebView"
+        <activity android:name=".presentation.base.NewsDetailsFragment"
             android:label="@string/app_name"
             android:theme="@style/Theme.AppCompat.NoActionBar">
         </activity>

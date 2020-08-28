@@ -16,14 +16,14 @@
             android:layout_height="match_parent">
 
             <ImageView
-                android:id="@+id/imageview_1"
+                android:id="@+id/post_image"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:alpha="0.5"
                 android:scaleType="centerCrop" />
 
             <TextView
-                android:id="@+id/textview_1"
+                android:id="@+id/post_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
@@ -36,7 +36,7 @@
                 android:textStyle="bold" />
 
             <TextView
-                android:id="@+id/textview_2"
+                android:id="@+id/post_date"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
