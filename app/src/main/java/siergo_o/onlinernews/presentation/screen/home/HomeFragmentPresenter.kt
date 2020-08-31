@@ -12,9 +12,8 @@ class HomeFragmentPresenter(
 ) : BaseMvpPresenter<HomeFragmentContract.Ui, HomeFragmentContract.Presenter.State>(), HomeFragmentContract.Presenter {
 
     companion object {
-        private const val TAG = "DiningChecksPaymentResultFragmentPresenter"
         private const val FLAG_SETUP_UI = 0x0001
-        private const val TASK_LOAD_NEWS = "sendDiningCheckReceipt"
+        private const val TASK_LOAD_NEWS = "loadNews"
     }
 
     private val taskLoadNews = loadNewsTask()
@@ -31,7 +30,7 @@ class HomeFragmentPresenter(
     private fun updateUi(flags: Int) {
         if (0 != (flags and FLAG_SETUP_UI)) {
             if (feedList != null) {
-                ui.setData(feedList!!)
+                ui.setViewPager(feedList!!)
             }
         }
     }

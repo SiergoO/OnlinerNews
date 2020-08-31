@@ -4,38 +4,38 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import com.google.android.material.tabs.TabLayoutMediator
 import com.ipictheaters.ipic.presentation.base.BaseMvpFragment
 import com.softeq.android.mvp.PresenterStateHolder
 import com.softeq.android.mvp.VoidPresenterStateHolder
 import siergo_o.onlinernews.App
-import siergo_o.onlinernews.databinding.FragmentNewsBinding
+import siergo_o.onlinernews.R
+import siergo_o.onlinernews.databinding.FragmentHomeBinding
 import siergo_o.onlinernews.domain.news.interactor.LoadAllNewsInteractorImpl
 import siergo_o.onlinernews.domain.news.model.RssFeed
 
 class HomeFragment : BaseMvpFragment<HomeFragmentContract.Ui, HomeFragmentContract.Presenter.State, HomeFragmentContract.Presenter>(), HomeFragmentContract.Ui {
 
-    private var _viewBinding: FragmentNewsBinding? = null
-    private val viewBinding: FragmentNewsBinding
-        get() = _viewBinding!!
-    private val tabTitles = listOf("Техно", "Люди", "Авто")
-    private var pager: ViewPagerAdapter? = null
+    private var _viewBinding: FragmentHomeBinding? = null
+    private val viewBinding: FragmentHomeBinding get() = _viewBinding!!
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View =
-            FragmentNewsBinding.inflate(inflater, container, false).also { _viewBinding = it }.root
+            FragmentHomeBinding.inflate(inflater, container, false).also { _viewBinding = it }.root
 
     override fun createPresenterStateHolder(): PresenterStateHolder<HomeFragmentContract.Presenter.State> = VoidPresenterStateHolder()
 
     override fun getUi(): HomeFragmentContract.Ui = this
 
-    override fun setData(news: List<RssFeed>) {
-        pager = ViewPagerAdapter(this, news)
-        viewBinding.viewpager.adapter = pager
+    override fun setViewPager(news: List<RssFeed>) {
+        viewBinding.viewpager.adapter = ViewPagerAdapter(this, news)
         TabLayoutMediator(viewBinding.tablayout, viewBinding.viewpager) { tab, position ->
-            val tag = tabTitles[position]
             viewBinding.viewpager.setCurrentItem(tab.position, true)
-            tab.text = tag
+            tab.text = when(position) {
+                0 -> context?.getString(R.string.tech)
+                1 -> context?.getString(R.string.people)
+                2 -> context?.getString(R.string.auto)
+                else -> ""
+            }
         }.attach()
     }
 

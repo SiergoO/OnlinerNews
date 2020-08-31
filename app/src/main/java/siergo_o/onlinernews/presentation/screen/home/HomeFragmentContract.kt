@@ -5,7 +5,7 @@ import siergo_o.onlinernews.presentation.base.BaseMvpContract
 
 interface HomeFragmentContract {
     interface Ui : BaseMvpContract.Ui {
-        fun setData(news: List<RssFeed>)
+        fun setViewPager(news: List<RssFeed>)
     }
 
     interface Presenter : BaseMvpContract.Presenter<Ui, Presenter.State> {

@@ -11,7 +11,7 @@ import com.ipictheaters.ipic.presentation.base.BaseMvpFragment
 import com.softeq.android.mvp.PresenterStateHolder
 import com.softeq.android.mvp.VoidPresenterStateHolder
 import siergo_o.onlinernews.App
-import siergo_o.onlinernews.databinding.FragmentNewsContentBinding
+import siergo_o.onlinernews.databinding.FragmentNewsBinding
 import siergo_o.onlinernews.domain.news.interactor.LoadNewsFeedInteractorImpl
 import siergo_o.onlinernews.domain.news.model.RssFeed
 import siergo_o.onlinernews.domain.news.model.RssItem
@@ -36,17 +36,15 @@ class NewsFragment :
     }
 
     private var postAdapter: NewsAdapter? = null
-    private var _viewBinding: FragmentNewsContentBinding? = null
-    private val viewBinding: FragmentNewsContentBinding
+    private var _viewBinding: FragmentNewsBinding? = null
+    private val viewBinding: FragmentNewsBinding
         get() = _viewBinding!!
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? =
-            FragmentNewsContentBinding.inflate(inflater, container, false).also { _viewBinding = it }.root
+            FragmentNewsBinding.inflate(inflater, container, false).also { _viewBinding = it }.root
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        if (postAdapter == null) {
-            postAdapter = NewsAdapter()
-        }
+        postAdapter = NewsAdapter()
         viewBinding.apply {
             (root as SwipeRefreshLayout).setOnRefreshListener { presenter.newsRefreshed(requireArguments().getSerializable(ARG_CURRENT_TAB) as NewsFragmentContract.TAB) }
             viewBinding.rvNews.apply {
