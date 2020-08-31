@@ -1,4 +1,4 @@
-package siergo_o.onlinernews.adapter;
+package siergo_o.onlinernews.presentation.screen.news;
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -13,7 +13,7 @@ import siergo_o.onlinernews.databinding.ItemNewsBinding
 import siergo_o.onlinernews.domain.news.model.RssItem
 import java.util.regex.Pattern
 
-class PostsAdapter : RecyclerView.Adapter<PostsAdapter.ViewHolder>() {
+class NewsAdapter : RecyclerView.Adapter<NewsAdapter.ViewHolder>() {
 
     companion object {
         private const val ARG_POST_URL = "postUrl"
@@ -23,15 +23,15 @@ class PostsAdapter : RecyclerView.Adapter<PostsAdapter.ViewHolder>() {
     private val viewBinding: ItemNewsBinding
         get() = _viewBinding!!
     private var imgUrl: String? = null
-    private lateinit var posts: List<RssItem>
+    private var posts: List<RssItem>? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder =
             ViewHolder(ItemNewsBinding.inflate(LayoutInflater.from(parent.context), parent, false).also { _viewBinding = it })
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val post = posts[position]
+        val post = posts!![position]
         val imgUrlPattern = Pattern.compile("img src=\"(.*?)\"")
-        val imgUrlMatcher = imgUrlPattern.matcher(post.description!!)
+        val imgUrlMatcher = imgUrlPattern.matcher(post.description)
         if (imgUrlMatcher.find()) {
             imgUrl = imgUrlMatcher.group(1)?.replace("thumbnail", "1400x5616")
         }
@@ -45,7 +45,7 @@ class PostsAdapter : RecyclerView.Adapter<PostsAdapter.ViewHolder>() {
         }
     }
 
-    override fun getItemCount(): Int = posts.size
+    override fun getItemCount(): Int = posts!!.size
 
     fun set(posts: List<RssItem>) {
         this.posts = posts

@@ -5,12 +5,12 @@ import siergo_o.onlinernews.domain.news.model.RssItem
 import siergo_o.onlinernews.domain.news.model.RssNewsChannel
 
 fun NetRssFeed.toDomainModel(): RssFeed = RssFeed(
-        this.channel!!
+        this.channel.toDomainModel()
 )
 
 fun NetRssNewsChannel.toDomainModel(): RssNewsChannel = RssNewsChannel(
         this.link,
-        this.items?.map { it.toDomainModel() }
+        this.items.map { it.toDomainModel() }
 )
 
 fun NetRssItem.toDomainModel(): RssItem = RssItem(

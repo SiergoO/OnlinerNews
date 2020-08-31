@@ -8,30 +8,18 @@
             <LayoutPositions>
               <option name="myPositions">
                 <map>
-                  <entry key="descriptionWebView">
-                    <value>
-                      <LayoutPositions>
-                        <option name="myPosition">
-                          <Point>
-                            <option name="x" value="516" />
-                            <option name="y" value="310" />
-                          </Point>
-                        </option>
-                      </LayoutPositions>
-                    </value>
-                  </entry>
                   <entry key="homeFragment">
                     <value>
                       <LayoutPositions>
                         <option name="myPosition">
                           <Point>
-                            <option name="x" value="123" />
-                            <option name="y" value="310" />
+                            <option name="x" value="-190" />
+                            <option name="y" value="12" />
                           </Point>
                         </option>
                         <option name="myPositions">
                           <map>
-                            <entry key="action_homeFragment_to_newsFragment">
+                            <entry key="navToDescriptionWebView">
                               <value>
                                 <LayoutPositions />
                               </value>
@@ -41,23 +29,14 @@
                       </LayoutPositions>
                     </value>
                   </entry>
-                  <entry key="newsFragment">
+                  <entry key="newsDetailsFragment">
                     <value>
                       <LayoutPositions>
                         <option name="myPosition">
                           <Point>
-                            <option name="x" value="319" />
-                            <option name="y" value="310" />
+                            <option name="x" value="12" />
+                            <option name="y" value="12" />
                           </Point>
-                        </option>
-                        <option name="myPositions">
-                          <map>
-                            <entry key="action_newsFragment_to_descriptionWebView2">
-                              <value>
-                                <LayoutPositions />
-                              </value>
-                            </entry>
-                          </map>
                         </option>
                       </LayoutPositions>
                     </value>

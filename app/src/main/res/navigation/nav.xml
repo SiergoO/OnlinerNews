@@ -13,6 +13,6 @@
     </fragment>
     <fragment
         android:id="@+id/newsDetailsFragment"
-        android:name="siergo_o.onlinernews.presentation.base.NewsDetailsFragment"
+        android:name="siergo_o.onlinernews.presentation.screen.detail.NewsDetailsFragment"
         android:label="NewsDetailsFragment" />
 </navigation>

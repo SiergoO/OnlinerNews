@@ -7,7 +7,7 @@ import org.simpleframework.xml.Root
 
 class NetRssFeed {
     @field:Element(name = "channel")
-    var channel: NetRssNewsChannel? = null
+    lateinit var channel: NetRssNewsChannel
 
     override fun toString(): String {
         return "RssFeed [channel=$channel]"

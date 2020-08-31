@@ -1,4 +1,4 @@
-package siergo_o.onlinernews.presentation.base;
+package siergo_o.onlinernews.presentation.screen.detail;
 
 import android.annotation.SuppressLint
 import android.os.Bundle

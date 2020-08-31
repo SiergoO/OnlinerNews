@@ -7,10 +7,21 @@ import siergo_o.onlinernews.domain.news.repository.NewsRepository
 
 class NewsRepositoryImpl(private val onlinerTechApi: OnlinerApi, private val onlinerPeopleApi: OnlinerApi, private val onlinerAutoApi: OnlinerApi) : NewsRepository {
 
-    override fun getNews(): List<RssFeed>  {
+    override fun getAllNews(): List<RssFeed>  {
         val tech = onlinerTechApi.getFeed()!!.execute().body()!!.toDomainModel()
         val people = onlinerPeopleApi.getFeed()!!.execute().body()!!.toDomainModel()
         val auto = onlinerAutoApi.getFeed()!!.execute().body()!!.toDomainModel()
         return mutableListOf(tech, people, auto)
     }
+
+    override fun getTechNews(): RssFeed =
+        onlinerTechApi.getFeed()!!.execute().body()!!.toDomainModel()
+
+
+    override fun getPeopleNews(): RssFeed =
+        onlinerPeopleApi.getFeed()!!.execute().body()!!.toDomainModel()
+
+
+    override fun getAutoNews(): RssFeed =
+        onlinerAutoApi.getFeed()!!.execute().body()!!.toDomainModel()
 }

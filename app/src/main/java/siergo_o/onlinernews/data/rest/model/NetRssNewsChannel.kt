@@ -9,10 +9,10 @@ import siergo_o.onlinernews.data.rest.model.NetRssItem
 
 class NetRssNewsChannel {
     @field:Element(name = "link")
-    var link: String? = null
+    lateinit var link: String
 
     @field:ElementList(name = "item", required = false, inline = true)
-    var items: List<NetRssItem>? = null
+    lateinit var items: List<NetRssItem>
 
     override fun toString(): String {
         return "Channel [link=$link, item=$items]"
