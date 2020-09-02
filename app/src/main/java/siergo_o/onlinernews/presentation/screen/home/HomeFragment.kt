@@ -17,12 +17,16 @@ import siergo_o.onlinernews.databinding.FragmentHomeBinding
 import siergo_o.onlinernews.domain.news.interactor.LoadAllNewsInteractorImpl
 import siergo_o.onlinernews.domain.news.model.RssFeed
 import javax.inject.Inject
+import javax.inject.Named
 
 class HomeFragment : BaseMvpFragment<HomeFragmentContract.Ui, HomeFragmentContract.Presenter.State, HomeFragmentContract.Presenter>(), HomeFragmentContract.Ui {
 
-
-    @Inject
-    lateinit var retrofit: Retrofit
+    @Inject @field:[Named("tech")]
+    lateinit var retrofitTech: Retrofit
+    @Inject @field:[Named("people")]
+    lateinit var retrofitPeople: Retrofit
+    @Inject @field:[Named("auto")]
+    lateinit var retrofitAuto: Retrofit
     private var _viewBinding: FragmentHomeBinding? = null
     private val viewBinding: FragmentHomeBinding get() = _viewBinding!!
 
@@ -52,7 +56,7 @@ class HomeFragment : BaseMvpFragment<HomeFragmentContract.Ui, HomeFragmentContra
     }
 
     override fun createPresenter(): HomeFragmentContract.Presenter =
-            HomeFragmentPresenter(LoadAllNewsInteractorImpl(NewsRepositoryImpl(retrofit.create(OnlinerApi::class.java),
-                    retrofit.create(OnlinerApi::class.java),
-                    retrofit.create(OnlinerApi::class.java))))
+            HomeFragmentPresenter(LoadAllNewsInteractorImpl(NewsRepositoryImpl(retrofitTech.create(OnlinerApi::class.java),
+                    retrofitPeople.create(OnlinerApi::class.java),
+                    retrofitAuto.create(OnlinerApi::class.java))))
 }

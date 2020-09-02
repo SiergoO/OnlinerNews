@@ -22,6 +22,7 @@ import siergo_o.onlinernews.presentation.model.UiRssFeed
 import siergo_o.onlinernews.presentation.model.toDomainModel
 import siergo_o.onlinernews.presentation.model.toUiModel
 import javax.inject.Inject
+import javax.inject.Named
 
 class NewsFragment :
         BaseMvpFragment<NewsFragmentContract.Ui, NewsFragmentContract.Presenter.State, NewsFragmentContract.Presenter>(), NewsFragmentContract.Ui {
@@ -38,8 +39,12 @@ class NewsFragment :
                     }
                 }
     }
-    @Inject
-    lateinit var retrofit: Retrofit
+    @Inject @field:[Named("tech")]
+    lateinit var retrofitTech: Retrofit
+    @Inject @field:[Named("people")]
+    lateinit var retrofitPeople: Retrofit
+    @Inject @field:[Named("auto")]
+    lateinit var retrofitAuto: Retrofit
     private var postAdapter: NewsAdapter? = null
     private var _viewBinding: FragmentNewsBinding? = null
     private val viewBinding: FragmentNewsBinding
@@ -87,7 +92,7 @@ class NewsFragment :
             NewsFragmentPresenter(
                     arguments?.getSerializable(ARG_CURRENT_TAB) as NewsFragmentContract.TAB,
                     arguments?.getParcelable<UiRssFeed>(ARG_FEED_LIST)!!.toDomainModel(),
-                    LoadNewsFeedInteractorImpl(NewsRepositoryImpl(retrofit.create(OnlinerApi::class.java),
-                            retrofit.create(OnlinerApi::class.java),
-                            retrofit.create(OnlinerApi::class.java))))
+                    LoadNewsFeedInteractorImpl(NewsRepositoryImpl(retrofitTech.create(OnlinerApi::class.java),
+                            retrofitPeople.create(OnlinerApi::class.java),
+                            retrofitAuto.create(OnlinerApi::class.java))))
 }

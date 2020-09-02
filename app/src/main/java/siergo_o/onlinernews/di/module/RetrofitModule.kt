@@ -7,6 +7,7 @@ import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.simplexml.SimpleXmlConverterFactory
 import java.util.concurrent.TimeUnit
+import javax.inject.Named
 import javax.inject.Singleton
 
 @Module
@@ -26,13 +27,28 @@ class RetrofitModule {
 
     @Provides
     @Singleton
-    fun provideRetrofit(okHttpClient: OkHttpClient): Retrofit {
-        return Retrofit.Builder()
-                .baseUrl("https://people.onliner.by")
-                .addConverterFactory(
-                        SimpleXmlConverterFactory.create()
-                )
-                .client(okHttpClient)
-                .build()
-    }
-}
+    @Named("tech")
+    fun provideTechRetrofit(okHttpClient: OkHttpClient): Retrofit =
+        createRetrofit(okHttpClient, "tech")
+
+    @Provides
+    @Singleton
+    @Named("people")
+    fun providePeopleRetrofit(okHttpClient: OkHttpClient): Retrofit =
+        createRetrofit(okHttpClient, "people")
+
+    @Provides
+    @Singleton
+    @Named("auto")
+    fun provideAutoRetrofit(okHttpClient: OkHttpClient): Retrofit =
+        createRetrofit(okHttpClient, "auto")
+
+
+    fun createRetrofit(okHttpClient: OkHttpClient, site: String) =
+            Retrofit.Builder()
+                    .baseUrl("https://$site.onliner.by")
+                    .addConverterFactory(
+                            SimpleXmlConverterFactory.create()
+                    )
+                    .client(okHttpClient)
+                    .build()}
