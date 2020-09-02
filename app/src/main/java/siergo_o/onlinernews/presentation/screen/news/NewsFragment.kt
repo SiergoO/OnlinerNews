@@ -10,7 +10,10 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.ipictheaters.ipic.presentation.base.BaseMvpFragment
 import com.softeq.android.mvp.PresenterStateHolder
 import com.softeq.android.mvp.VoidPresenterStateHolder
+import retrofit2.Retrofit
 import siergo_o.onlinernews.App
+import siergo_o.onlinernews.data.news.repository.NewsRepositoryImpl
+import siergo_o.onlinernews.data.rest.OnlinerApi
 import siergo_o.onlinernews.databinding.FragmentNewsBinding
 import siergo_o.onlinernews.domain.news.interactor.LoadNewsFeedInteractorImpl
 import siergo_o.onlinernews.domain.news.model.RssFeed
@@ -18,6 +21,7 @@ import siergo_o.onlinernews.domain.news.model.RssItem
 import siergo_o.onlinernews.presentation.model.UiRssFeed
 import siergo_o.onlinernews.presentation.model.toDomainModel
 import siergo_o.onlinernews.presentation.model.toUiModel
+import javax.inject.Inject
 
 class NewsFragment :
         BaseMvpFragment<NewsFragmentContract.Ui, NewsFragmentContract.Presenter.State, NewsFragmentContract.Presenter>(), NewsFragmentContract.Ui {
@@ -34,11 +38,17 @@ class NewsFragment :
                     }
                 }
     }
-
+    @Inject
+    lateinit var retrofit: Retrofit
     private var postAdapter: NewsAdapter? = null
     private var _viewBinding: FragmentNewsBinding? = null
     private val viewBinding: FragmentNewsBinding
         get() = _viewBinding!!
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        App.component.inject(this)
+        super.onCreate(savedInstanceState)
+    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? =
             FragmentNewsBinding.inflate(inflater, container, false).also { _viewBinding = it }.root
@@ -77,5 +87,7 @@ class NewsFragment :
             NewsFragmentPresenter(
                     arguments?.getSerializable(ARG_CURRENT_TAB) as NewsFragmentContract.TAB,
                     arguments?.getParcelable<UiRssFeed>(ARG_FEED_LIST)!!.toDomainModel(),
-                    LoadNewsFeedInteractorImpl(App.instance.newsRepository))
+                    LoadNewsFeedInteractorImpl(NewsRepositoryImpl(retrofit.create(OnlinerApi::class.java),
+                            retrofit.create(OnlinerApi::class.java),
+                            retrofit.create(OnlinerApi::class.java))))
 }

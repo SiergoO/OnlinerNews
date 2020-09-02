@@ -1,32 +1,19 @@
 package siergo_o.onlinernews;
 
 import android.app.Application
-import siergo_o.onlinernews.data.news.repository.NewsRepositoryImpl
-import siergo_o.onlinernews.data.rest.OnlinerApi
-import siergo_o.onlinernews.data.rest.OnlinerApiFactory
-import siergo_o.onlinernews.domain.news.repository.NewsRepository
+import siergo_o.onlinernews.di.component.AppComponent
+import siergo_o.onlinernews.di.component.DaggerAppComponent
 
 class App : Application() {
 
     companion object {
-        lateinit var instance: App
-            private set
+        lateinit var component: AppComponent
     }
-
-    private val onlinerTechApi: OnlinerApi by lazy {
-        OnlinerApiFactory.create(this, "https://tech.onliner.by")
-    }
-    private val onlinerAutoApi: OnlinerApi by lazy {
-        OnlinerApiFactory.create(this, "https://auto.onliner.by")
-    }
-    private val onlinerPeopleApi: OnlinerApi by lazy {
-        OnlinerApiFactory.create(this, "https://people.onliner.by")
-    }
-
-    val newsRepository: NewsRepository by lazy { NewsRepositoryImpl(onlinerTechApi, onlinerPeopleApi, onlinerAutoApi) }
 
     override fun onCreate() {
-        instance = this
         super.onCreate()
+        component = buildComponent()
     }
+
+    private fun buildComponent(): AppComponent = DaggerAppComponent.builder().application(this).build()
 }
