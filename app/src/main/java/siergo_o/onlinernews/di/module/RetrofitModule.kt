@@ -17,6 +17,7 @@ class RetrofitModule {
         private const val HTTP_CONNECT_TIMEOUT_MS = 20 * 1000
         private const val HTTP_READ_TIMEOUT_MS = 20 * 1000
     }
+
     @Provides
     @Singleton
     fun provideOkHttp(): OkHttpClient = OkHttpClient.Builder().apply {
@@ -29,26 +30,26 @@ class RetrofitModule {
     @Singleton
     @Named("tech")
     fun provideTechRetrofit(okHttpClient: OkHttpClient): Retrofit =
-        createRetrofit(okHttpClient, "tech")
+            createRetrofit(okHttpClient, "tech")
 
     @Provides
     @Singleton
     @Named("people")
     fun providePeopleRetrofit(okHttpClient: OkHttpClient): Retrofit =
-        createRetrofit(okHttpClient, "people")
+            createRetrofit(okHttpClient, "people")
 
     @Provides
     @Singleton
     @Named("auto")
     fun provideAutoRetrofit(okHttpClient: OkHttpClient): Retrofit =
-        createRetrofit(okHttpClient, "auto")
+            createRetrofit(okHttpClient, "auto")
 
-
-    fun createRetrofit(okHttpClient: OkHttpClient, site: String) =
+    private fun createRetrofit(okHttpClient: OkHttpClient, site: String): Retrofit =
             Retrofit.Builder()
                     .baseUrl("https://$site.onliner.by")
                     .addConverterFactory(
                             SimpleXmlConverterFactory.create()
                     )
                     .client(okHttpClient)
-                    .build()}
+                    .build()
+}
