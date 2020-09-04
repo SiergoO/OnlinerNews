@@ -24,13 +24,5 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-        <activity android:name=".presentation.screen.detail.NewsDetailsFragment"
-            android:label="@string/app_name"
-            android:theme="@style/Theme.AppCompat.NoActionBar">
-        </activity>
-
-
     </application>
-
 </manifest>

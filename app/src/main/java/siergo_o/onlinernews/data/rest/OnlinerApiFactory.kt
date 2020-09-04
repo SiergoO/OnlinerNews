@@ -1,30 +1,36 @@
 package siergo_o.onlinernews.data.rest
 
-import android.content.Context
-import okhttp3.OkHttpClient
-import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
-import retrofit2.converter.simplexml.SimpleXmlConverterFactory
-import java.util.concurrent.TimeUnit
+import siergo_o.onlinernews.App
+import javax.inject.Inject
+import javax.inject.Named
+import javax.inject.Singleton
 
-object OnlinerApiFactory {
+@Singleton
+class OnlinerApiFactory {
 
-    private const val HTTP_CONNECT_TIMEOUT_MS = 20 * 1000
-    private const val HTTP_READ_TIMEOUT_MS = 20 * 1000
+    init {
+        App.component.inject(this)
+    }
 
-    fun create(context: Context, baseUrl: String): OnlinerApi {
-        val okHttpClient = OkHttpClient.Builder().apply {
-            connectTimeout(HTTP_CONNECT_TIMEOUT_MS.toLong(), TimeUnit.MILLISECONDS)
-            readTimeout(HTTP_READ_TIMEOUT_MS.toLong(), TimeUnit.MILLISECONDS)
-                addInterceptor(HttpLoggingInterceptor().apply { level = HttpLoggingInterceptor.Level.BODY })
-        }.build()
-        val retrofit = Retrofit.Builder()
-                .baseUrl(baseUrl)
-                .addConverterFactory(
-                        SimpleXmlConverterFactory.create()
-                )
-                .client(okHttpClient)
-                .build()
-        return OnlinerApiWrapper(retrofit.create<OnlinerApi>(OnlinerApi::class.java))
+    @Inject
+    @field:[Named("tech")]
+    lateinit var retrofitTech: Retrofit
+
+    @Inject
+    @field:[Named("people")]
+    lateinit var retrofitPeople: Retrofit
+
+    @Inject
+    @field:[Named("auto")]
+    lateinit var retrofitAuto: Retrofit
+
+    fun getApi(site: String): OnlinerApi {
+        return when (site) {
+            "tech" -> retrofitTech.create(OnlinerApi::class.java)
+            "people" -> retrofitPeople.create(OnlinerApi::class.java)
+            "auto" -> retrofitAuto.create(OnlinerApi::class.java)
+            else -> retrofitTech.create(OnlinerApi::class.java)
+        }
     }
 }

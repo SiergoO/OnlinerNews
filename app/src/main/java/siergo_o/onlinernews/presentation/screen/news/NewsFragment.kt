@@ -10,7 +10,8 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.ipictheaters.ipic.presentation.base.BaseMvpFragment
 import com.softeq.android.mvp.PresenterStateHolder
 import com.softeq.android.mvp.VoidPresenterStateHolder
-import siergo_o.onlinernews.App
+import siergo_o.onlinernews.data.news.repository.NewsRepositoryImpl
+import siergo_o.onlinernews.data.rest.OnlinerApiFactory
 import siergo_o.onlinernews.databinding.FragmentNewsBinding
 import siergo_o.onlinernews.domain.news.interactor.LoadNewsFeedInteractorImpl
 import siergo_o.onlinernews.domain.news.model.RssFeed
@@ -34,7 +35,7 @@ class NewsFragment :
                     }
                 }
     }
-
+    private val api = OnlinerApiFactory()
     private var postAdapter: NewsAdapter? = null
     private var _viewBinding: FragmentNewsBinding? = null
     private val viewBinding: FragmentNewsBinding
@@ -74,8 +75,10 @@ class NewsFragment :
     override fun getUi(): NewsFragmentContract.Ui = this
 
     override fun createPresenter(): NewsFragmentContract.Presenter =
-            NewsFragmentPresenter(
-                    arguments?.getSerializable(ARG_CURRENT_TAB) as NewsFragmentContract.TAB,
-                    arguments?.getParcelable<UiRssFeed>(ARG_FEED_LIST)!!.toDomainModel(),
-                    LoadNewsFeedInteractorImpl(App.instance.newsRepository))
-}
+        NewsFragmentPresenter(
+                arguments?.getSerializable(ARG_CURRENT_TAB) as NewsFragmentContract.TAB,
+                arguments?.getParcelable<UiRssFeed>(ARG_FEED_LIST)!!.toDomainModel(),
+                LoadNewsFeedInteractorImpl(NewsRepositoryImpl(api.getApi("tech"),
+                        api.getApi("people"),
+                        api.getApi("auto"))))
+    }

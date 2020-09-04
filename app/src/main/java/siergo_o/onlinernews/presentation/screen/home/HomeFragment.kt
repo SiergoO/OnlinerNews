@@ -8,14 +8,16 @@ import com.google.android.material.tabs.TabLayoutMediator
 import com.ipictheaters.ipic.presentation.base.BaseMvpFragment
 import com.softeq.android.mvp.PresenterStateHolder
 import com.softeq.android.mvp.VoidPresenterStateHolder
-import siergo_o.onlinernews.App
 import siergo_o.onlinernews.R
+import siergo_o.onlinernews.data.news.repository.NewsRepositoryImpl
+import siergo_o.onlinernews.data.rest.OnlinerApiFactory
 import siergo_o.onlinernews.databinding.FragmentHomeBinding
 import siergo_o.onlinernews.domain.news.interactor.LoadAllNewsInteractorImpl
 import siergo_o.onlinernews.domain.news.model.RssFeed
 
 class HomeFragment : BaseMvpFragment<HomeFragmentContract.Ui, HomeFragmentContract.Presenter.State, HomeFragmentContract.Presenter>(), HomeFragmentContract.Ui {
 
+    private val api = OnlinerApiFactory()
     private var _viewBinding: FragmentHomeBinding? = null
     private val viewBinding: FragmentHomeBinding get() = _viewBinding!!
 
@@ -30,7 +32,7 @@ class HomeFragment : BaseMvpFragment<HomeFragmentContract.Ui, HomeFragmentContra
         viewBinding.viewpager.adapter = ViewPagerAdapter(this, news)
         TabLayoutMediator(viewBinding.tablayout, viewBinding.viewpager) { tab, position ->
             viewBinding.viewpager.setCurrentItem(tab.position, true)
-            tab.text = when(position) {
+            tab.text = when (position) {
                 0 -> context?.getString(R.string.tech)
                 1 -> context?.getString(R.string.people)
                 2 -> context?.getString(R.string.auto)
@@ -40,5 +42,7 @@ class HomeFragment : BaseMvpFragment<HomeFragmentContract.Ui, HomeFragmentContra
     }
 
     override fun createPresenter(): HomeFragmentContract.Presenter =
-            HomeFragmentPresenter(LoadAllNewsInteractorImpl(App.instance.newsRepository))
+            HomeFragmentPresenter(LoadAllNewsInteractorImpl(NewsRepositoryImpl(api.getApi("tech"),
+                    api.getApi("people"),
+                    api.getApi("auto"))))
 }
