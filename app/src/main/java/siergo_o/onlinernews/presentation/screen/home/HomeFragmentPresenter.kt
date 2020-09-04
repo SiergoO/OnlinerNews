@@ -12,7 +12,8 @@ class HomeFragmentPresenter(
 ) : BaseMvpPresenter<HomeFragmentContract.Ui, HomeFragmentContract.Presenter.State>(), HomeFragmentContract.Presenter {
 
     companion object {
-        private const val FLAG_SETUP_UI = 0x0001
+        private const val FLAG_SETUP_HOME_UI = 0x0001
+        private const val FLAG_SETUP_SPLASH_UI = 0x0002
         private const val TASK_LOAD_NEWS = "loadNews"
     }
 
@@ -20,7 +21,7 @@ class HomeFragmentPresenter(
     private var feedList: List<RssFeed>? = null
 
     override fun start() {
-        ui.showSplashScreen(true)
+        updateUi(FLAG_SETUP_SPLASH_UI) 
         taskLoadNews.start(LoadAllNewsInteractor.Param(), Unit)
     }
 
@@ -29,11 +30,14 @@ class HomeFragmentPresenter(
     }
 
     private fun updateUi(flags: Int) {
-        if (0 != (flags and FLAG_SETUP_UI)) {
+        if (0 != (flags and FLAG_SETUP_HOME_UI)) {
             if (feedList != null) {
                 ui.setViewPager(feedList!!)
                 ui.showSplashScreen(false)
             }
+        }
+        if (0 != (flags and FLAG_SETUP_SPLASH_UI)) {
+            ui.showSplashScreen(true)
         }
     }
 
@@ -46,7 +50,7 @@ class HomeFragmentPresenter(
         } else if (error != null) {
             throw Exception()
         }
-        updateUi(FLAG_SETUP_UI)
+        updateUi(FLAG_SETUP_HOME_UI)
     }
 
     private fun loadNewsTask() =
