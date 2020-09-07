@@ -41,14 +41,14 @@ class HomeFragment : BaseMvpFragment<HomeFragmentContract.Ui, HomeFragmentContra
         }.attach()
     }
 
-    override fun showSplashScreen(show: Boolean) {
+    override fun showLoading(show: Boolean) {
         if (show) {
             viewBinding.apply {
-                layoutSplash.root.visibility = View.VISIBLE
+                layoutLoading.root.visibility = View.VISIBLE
                 layoutContent.root.visibility = View.GONE
             }
         } else viewBinding.apply {
-            layoutSplash.root.visibility = View.GONE
+            layoutLoading.root.visibility = View.GONE
             layoutContent.root.visibility = View.VISIBLE
         }
     }

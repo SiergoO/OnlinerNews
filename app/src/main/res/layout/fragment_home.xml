@@ -7,8 +7,8 @@
         android:id="@+id/layout_content"
         android:visibility="visible"/>
 
-    <include layout="@layout/fragment_splash"
-        android:id="@+id/layout_splash"
+    <include layout="@layout/layout_loading"
+        android:id="@+id/layout_loading"
         android:visibility="gone"/>
 
 </FrameLayout>

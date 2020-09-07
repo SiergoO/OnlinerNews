@@ -21,7 +21,7 @@ class HomeFragmentPresenter(
     private var feedList: List<RssFeed>? = null
 
     override fun start() {
-        updateUi(FLAG_SETUP_SPLASH_UI) 
+        updateUi(FLAG_SETUP_SPLASH_UI)
         taskLoadNews.start(LoadAllNewsInteractor.Param(), Unit)
     }
 
@@ -33,11 +33,11 @@ class HomeFragmentPresenter(
         if (0 != (flags and FLAG_SETUP_HOME_UI)) {
             if (feedList != null) {
                 ui.setViewPager(feedList!!)
-                ui.showSplashScreen(false)
+                ui.showLoading(false)
             }
         }
         if (0 != (flags and FLAG_SETUP_SPLASH_UI)) {
-            ui.showSplashScreen(true)
+            ui.showLoading(true)
         }
     }
 
