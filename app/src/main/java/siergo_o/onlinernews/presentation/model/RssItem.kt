@@ -11,15 +11,15 @@ data class RssItem(
         var title: String,
         var link: String,
         var pubDate: String,
-        var category: String,
-        var description: String
+        var description: String,
+        var imageUrl: String
 ) : Parcelable
 
 fun DomainRssItem.toUiModel(): UiRssItem =
-        UiRssItem(title, link, pubDate, category, description)
+        UiRssItem(title, link, pubDate, description, imageUrl ?: "")
 
 fun UiRssItem.toDomainModel(): DomainRssItem =
-        DomainRssItem(title, link, pubDate, category, description)
+        DomainRssItem(title, link, pubDate, description, imageUrl)
 
 fun List<DomainRssItem>.toUi(): List<UiRssItem> =
         map {

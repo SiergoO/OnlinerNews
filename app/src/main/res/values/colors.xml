@@ -2,9 +2,9 @@
 <resources>
     <color name="white">#fff</color>
     <color name="colorPrimary">#f4f4f4</color>
-    <color name="colorPrimaryDark">#303F9F</color>
-    <color name="tabtextcolor">#1a6dbb</color>
-    <color name="tabindicatorcolor">#2d2d2d</color>
+    <color name="colorPrimaryDark">#00467f</color>
     <color name="colorAccent">#FF4081</color>
+    <color name="tabtextcolor">#1a6dbb</color>
+    <color name="tabindicatorcolor">#00467f</color>
     <color name="box">#c6c096</color>
 </resources>

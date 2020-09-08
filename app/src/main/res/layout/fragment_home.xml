@@ -1,58 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/white"
-    android:orientation="vertical"
-    tools:context=".presentation.screen.MainActivity">
+    android:layout_height="match_parent">
 
-    <com.google.android.material.appbar.AppBarLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+    <include layout="@layout/fragment_home_content"
+        android:id="@+id/layout_content"
+        android:visibility="visible"/>
 
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/colorPrimary"
-            app:layout_scrollFlags="scroll|enterAlways|snap"
-            app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
+    <include layout="@layout/layout_loading"
+        android:id="@+id/layout_loading"
+        android:visibility="gone"/>
 
-            <ImageView
-                android:id="@+id/onliner_logo"
-                android:layout_width="120dp"
-                android:layout_height="60dp"
-                android:layout_gravity="center_horizontal"
-                android:paddingEnd="12dp"
-                android:paddingStart="12dp"
-                android:src="@drawable/onliner_logo" />
-
-        </androidx.appcompat.widget.Toolbar>
-
-        <com.google.android.material.tabs.TabLayout
-            android:id="@+id/tablayout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/colorPrimary"
-            app:tabIndicatorColor="@color/tabindicatorcolor"
-            app:tabMode="fixed"
-            app:tabGravity="fill"
-            app:tabTextColor="@color/tabtextcolor">
-
-        </com.google.android.material.tabs.TabLayout>
-
-    </com.google.android.material.appbar.AppBarLayout>
-
-
-    <androidx.viewpager2.widget.ViewPager2
-
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        android:id="@+id/viewpager"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-    </androidx.viewpager2.widget.ViewPager2>
-
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+</FrameLayout>

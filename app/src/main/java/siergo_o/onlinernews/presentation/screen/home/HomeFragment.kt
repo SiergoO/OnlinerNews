@@ -29,9 +29,9 @@ class HomeFragment : BaseMvpFragment<HomeFragmentContract.Ui, HomeFragmentContra
     override fun getUi(): HomeFragmentContract.Ui = this
 
     override fun setViewPager(news: List<RssFeed>) {
-        viewBinding.viewpager.adapter = ViewPagerAdapter(this, news)
-        TabLayoutMediator(viewBinding.tablayout, viewBinding.viewpager) { tab, position ->
-            viewBinding.viewpager.setCurrentItem(tab.position, true)
+        viewBinding.layoutContent.viewpager.adapter = ViewPagerAdapter(this, news)
+        TabLayoutMediator(viewBinding.layoutContent.tablayout, viewBinding.layoutContent.viewpager) { tab, position ->
+            viewBinding.layoutContent.viewpager.setCurrentItem(tab.position, true)
             tab.text = when (position) {
                 0 -> context?.getString(R.string.tech)
                 1 -> context?.getString(R.string.people)
@@ -39,6 +39,18 @@ class HomeFragment : BaseMvpFragment<HomeFragmentContract.Ui, HomeFragmentContra
                 else -> ""
             }
         }.attach()
+    }
+
+    override fun showLoading(show: Boolean) {
+        if (show) {
+            viewBinding.apply {
+                layoutLoading.root.visibility = View.VISIBLE
+                layoutContent.root.visibility = View.GONE
+            }
+        } else viewBinding.apply {
+            layoutLoading.root.visibility = View.GONE
+            layoutContent.root.visibility = View.VISIBLE
+        }
     }
 
     override fun createPresenter(): HomeFragmentContract.Presenter =

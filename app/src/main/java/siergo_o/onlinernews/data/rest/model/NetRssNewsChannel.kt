@@ -13,8 +13,4 @@ class NetRssNewsChannel {
 
     @field:ElementList(name = "item", required = false, inline = true)
     lateinit var items: List<NetRssItem>
-
-    override fun toString(): String {
-        return "Channel [link=$link, item=$items]"
-    }
 }
