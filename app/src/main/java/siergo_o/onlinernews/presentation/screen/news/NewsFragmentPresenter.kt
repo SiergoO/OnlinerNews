@@ -33,8 +33,8 @@ class NewsFragmentPresenter(private val tab: NewsFragmentContract.TAB,
             if (feedList != null) {
                 ui.setData(feedList!!.channel.items)
             } else ui.setData(feed.channel.items)
-            ui.showLoading(taskLoadNewsFeed.isRunning())
         }
+        ui.showLoading(taskLoadNewsFeed.isRunning())
     }
 
     private fun handleLoadNews(

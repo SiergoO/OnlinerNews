@@ -13,7 +13,6 @@ class HomeFragmentPresenter(
 
     companion object {
         private const val FLAG_SETUP_HOME_UI = 0x0001
-        private const val FLAG_SETUP_SPLASH_UI = 0x0002
         private const val TASK_LOAD_NEWS = "loadNews"
     }
 
@@ -21,24 +20,17 @@ class HomeFragmentPresenter(
     private var feedList: List<RssFeed>? = null
 
     override fun start() {
-        updateUi(FLAG_SETUP_SPLASH_UI)
         taskLoadNews.start(LoadAllNewsInteractor.Param(), Unit)
-    }
-
-    override fun newsRefreshed() {
-        taskLoadNews.start(LoadAllNewsInteractor.Param(), Unit)
+        updateUi(0)
     }
 
     private fun updateUi(flags: Int) {
         if (0 != (flags and FLAG_SETUP_HOME_UI)) {
             if (feedList != null) {
                 ui.setViewPager(feedList!!)
-                ui.showLoading(false)
             }
         }
-        if (0 != (flags and FLAG_SETUP_SPLASH_UI)) {
-            ui.showLoading(true)
-        }
+        ui.showLoading(taskLoadNews.isRunning())
     }
 
     private fun handleLoadNews(
@@ -48,7 +40,7 @@ class HomeFragmentPresenter(
         if (data != null) {
             feedList = data.feed
         } else if (error != null) {
-            throw Exception()
+
         }
         updateUi(FLAG_SETUP_HOME_UI)
     }

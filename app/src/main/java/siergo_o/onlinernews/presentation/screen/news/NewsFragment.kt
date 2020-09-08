@@ -51,7 +51,7 @@ class NewsFragment :
         postAdapter = NewsAdapter()
         viewBinding.apply {
             root.setOnRefreshListener { presenter.newsRefreshed(requireArguments().getSerializable(ARG_CURRENT_TAB) as NewsFragmentContract.TAB) }
-            viewBinding.rvNews.apply {
+            rvNews.apply {
                 setHasFixedSize(true)
                 layoutManager = LinearLayoutManager(activity)
                 adapter = postAdapter
@@ -68,8 +68,8 @@ class NewsFragment :
         Toast.makeText(context, "Smth bad happened", Toast.LENGTH_SHORT).show()
     }
 
-    override fun showLoading(isShown: Boolean) {
-        viewBinding.root.isRefreshing = isShown
+    override fun showLoading(show: Boolean) {
+        viewBinding.root.isRefreshing = show
     }
 
     override fun createPresenterStateHolder(): PresenterStateHolder<NewsFragmentContract.Presenter.State> =

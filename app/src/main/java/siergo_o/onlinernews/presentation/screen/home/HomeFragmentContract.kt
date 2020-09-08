@@ -10,7 +10,6 @@ interface HomeFragmentContract {
     }
 
     interface Presenter : BaseMvpContract.Presenter<Ui, Presenter.State> {
-        fun newsRefreshed()
 
         interface State : BaseMvpContract.Presenter.State {
 

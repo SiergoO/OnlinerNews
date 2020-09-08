@@ -14,9 +14,8 @@ fun NetRssNewsChannel.toDomainModel(): RssNewsChannel = RssNewsChannel(
 )
 
 fun NetRssItem.toDomainModel(): RssItem = RssItem(
-        this.getTitle(),
+        this.title,
         this.link,
-        this.getPubDate(),
-        this.category,
+        this.pubDate,
         this.description
 )
