@@ -6,6 +6,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import siergo_o.onlinernews.domain.news.interactor.LoadAllNewsInteractor
 import siergo_o.onlinernews.domain.news.model.RssFeed
 import siergo_o.onlinernews.presentation.utils.asRxSingle
+import java.lang.Exception
 
 class HomeFragmentPresenter(
         private val loadAllNewsInteractor: LoadAllNewsInteractor
@@ -40,7 +41,7 @@ class HomeFragmentPresenter(
         if (data != null) {
             feedList = data.feed
         } else if (error != null) {
-
+            throw Exception() // TODO
         }
         updateUi(FLAG_SETUP_HOME_UI)
     }

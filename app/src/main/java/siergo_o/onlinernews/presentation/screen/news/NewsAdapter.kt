@@ -1,16 +1,19 @@
 package siergo_o.onlinernews.presentation.screen.news;
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.os.bundleOf
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
+import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
 import siergo_o.onlinernews.R
 import siergo_o.onlinernews.databinding.ItemNewsBinding
 import siergo_o.onlinernews.domain.news.model.RssItem
+import java.lang.Exception
 import java.util.regex.Pattern
 
 class NewsAdapter : RecyclerView.Adapter<NewsAdapter.ViewHolder>() {
@@ -22,7 +25,6 @@ class NewsAdapter : RecyclerView.Adapter<NewsAdapter.ViewHolder>() {
     private var _viewBinding: ItemNewsBinding? = null
     private val viewBinding: ItemNewsBinding
         get() = _viewBinding!!
-    private var imgUrl: String? = null
     private var posts: List<RssItem>? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder =
@@ -30,19 +32,24 @@ class NewsAdapter : RecyclerView.Adapter<NewsAdapter.ViewHolder>() {
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val post = posts!![position]
-        val imgUrlPattern = Pattern.compile("img src=\"(.*?)\"")
-        val imgUrlMatcher = imgUrlPattern.matcher(post.description)
-        if (imgUrlMatcher.find()) {
-            imgUrl = imgUrlMatcher.group(1)?.replace("thumbnail", "1400x5616")
-        }
-        Picasso.get().load(imgUrl).into(holder.image)
-        holder.apply {
-            title.text = post.title
-            date.text = post.pubDate
-            itemView.setOnClickListener {
-                it.findNavController().navigate(R.id.navToDescriptionWebView, bundleOf(ARG_POST_URL to post.link))
+        holder.itemView.visibility = View.GONE
+        Picasso.get().load(post.imageUrl.replace("thumbnail", "1400x5616")).into(holder.image, object : Callback {
+            override fun onSuccess() {
+                holder.apply {
+                    title.text = post.title
+                    date.text = post.pubDate
+                    itemView.apply {
+                        visibility = View.VISIBLE
+                        setOnClickListener {
+                            it.findNavController().navigate(R.id.navToDescriptionWebView, bundleOf(ARG_POST_URL to post.link))
+                        }
+                    }
+                }
             }
-        }
+            override fun onError(e: Exception?) {
+                Picasso.get().load(R.drawable.logo_onliner).into(holder.image)
+            }
+        })
     }
 
     override fun getItemCount(): Int = posts!!.size

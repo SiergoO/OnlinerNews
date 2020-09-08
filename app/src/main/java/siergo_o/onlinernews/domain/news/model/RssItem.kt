@@ -4,5 +4,6 @@ data class RssItem(
         var title: String,
         var link: String,
         var pubDate: String,
-        var description: String
+        var description: String,
+        var imageUrl: String
 )

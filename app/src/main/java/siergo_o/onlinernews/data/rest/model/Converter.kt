@@ -17,5 +17,6 @@ fun NetRssItem.toDomainModel(): RssItem = RssItem(
         this.title,
         this.link,
         this.pubDate,
-        this.description
+        this.description,
+        this.thumbnail.url
 )
