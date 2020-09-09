@@ -9,6 +9,7 @@ interface NewsFragmentContract : BaseMvpContract {
         fun setData(posts: List<RssItem>)
         fun showToast()
         fun showLoading(show: Boolean)
+        fun setStates(posts: List<RssItem>)
     }
 
     interface Presenter : BaseMvpContract.Presenter<Ui, Presenter.State> {

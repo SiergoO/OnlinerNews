@@ -1,14 +1,15 @@
 package siergo_o.onlinernews.presentation.screen.home
 
+import android.content.Context
 import com.ipictheaters.ipic.presentation.base.BaseMvpPresenter
 import com.ipictheaters.ipic.presentation.utils.task.SingleResultTask
 import io.reactivex.android.schedulers.AndroidSchedulers
 import siergo_o.onlinernews.domain.news.interactor.LoadAllNewsInteractor
 import siergo_o.onlinernews.domain.news.model.RssFeed
 import siergo_o.onlinernews.presentation.utils.asRxSingle
-import java.lang.Exception
 
 class HomeFragmentPresenter(
+        private val context: Context,
         private val loadAllNewsInteractor: LoadAllNewsInteractor
 ) : BaseMvpPresenter<HomeFragmentContract.Ui, HomeFragmentContract.Presenter.State>(), HomeFragmentContract.Presenter {
 

@@ -17,6 +17,8 @@ import siergo_o.onlinernews.data.news.repository.NewsRepositoryImpl
 import siergo_o.onlinernews.data.rest.OnlinerApiFactory
 import siergo_o.onlinernews.databinding.FragmentNewsBinding
 import siergo_o.onlinernews.domain.news.interactor.LoadNewsFeedInteractorImpl
+import siergo_o.onlinernews.domain.news.interactor.SearchNewsInteractor
+import siergo_o.onlinernews.domain.news.interactor.SearchNewsInteractorImpl
 import siergo_o.onlinernews.domain.news.model.RssFeed
 import siergo_o.onlinernews.domain.news.model.RssItem
 import siergo_o.onlinernews.presentation.model.UiRssFeed
@@ -64,6 +66,10 @@ class NewsFragment :
         postAdapter?.set(posts)
     }
 
+    override fun setStates(posts: List<RssItem>) {
+        postAdapter?.set(posts)
+    }
+
     override fun showToast() {
         Toast.makeText(context, "Smth bad happened", Toast.LENGTH_SHORT).show()
     }
@@ -81,6 +87,7 @@ class NewsFragment :
         NewsFragmentPresenter(
                 arguments?.getSerializable(ARG_CURRENT_TAB) as NewsFragmentContract.TAB,
                 arguments?.getParcelable<UiRssFeed>(ARG_FEED_LIST)!!.toDomainModel(),
+                SearchNewsInteractorImpl(),
                 LoadNewsFeedInteractorImpl(NewsRepositoryImpl(api.getApi("tech"),
                         api.getApi("people"),
                         api.getApi("auto"))))

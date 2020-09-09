@@ -6,7 +6,7 @@ import siergo_o.onlinernews.domain.news.model.RssFeed
 import siergo_o.onlinernews.presentation.screen.news.NewsFragment
 import siergo_o.onlinernews.presentation.screen.news.NewsFragmentContract
 
-class ViewPagerAdapter(private val fragment: Fragment, private val list: List<RssFeed>) : FragmentStateAdapter(fragment) {
+class ViewPagerAdapter(fragment: Fragment, private val list: List<RssFeed>) : FragmentStateAdapter(fragment) {
 
     override fun getItemCount(): Int = list.size
 
