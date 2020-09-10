@@ -7,9 +7,7 @@ import siergo_o.onlinernews.domain.news.interactor.LoadNewsFeedInteractor
 import siergo_o.onlinernews.domain.news.interactor.Search
 import siergo_o.onlinernews.domain.news.interactor.SearchNewsInteractor
 import siergo_o.onlinernews.domain.news.model.Feed
-import siergo_o.onlinernews.domain.news.model.RssFeed
 import siergo_o.onlinernews.domain.news.model.RssItem
-import siergo_o.onlinernews.presentation.screen.SearchNewsProvider
 import siergo_o.onlinernews.presentation.utils.ObservableValue
 import siergo_o.onlinernews.presentation.utils.Result
 import siergo_o.onlinernews.presentation.utils.asRxObservable

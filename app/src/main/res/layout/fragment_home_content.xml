@@ -4,11 +4,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
-    android:orientation="vertical"
-    tools:context=".presentation.screen.MainActivity">
+    android:background="@android:color/white"
+    android:orientation="vertical">
 
     <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appBarLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -18,8 +18,7 @@
             android:layout_height="match_parent"
             android:background="@color/colorPrimary"
             app:contentInsetStart="0dp"
-            app:layout_scrollFlags="scroll|enterAlways|snap"
-            app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
+            app:layout_scrollFlags="scroll|enterAlways|snap">
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -29,7 +28,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_centerVertical="true"
+                    android:paddingStart="0dp"
                     android:paddingTop="4dp"
+                    android:paddingEnd="48dp"
                     app:endIconDrawable="@drawable/ic_close"
                     app:endIconMode="clear_text"
                     app:hintEnabled="false">
@@ -43,9 +44,9 @@
                         android:imeOptions="actionSearch"
                         android:inputType="text"
                         android:paddingStart="12dp"
-                        android:textColor="@color/colorAccent"
                         android:paddingEnd="12dp"
-                        android:visibility="visible" />
+                        android:textColor="@color/colorAccent"
+                        android:visibility="gone" />
 
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -68,7 +69,6 @@
                     android:layout_centerVertical="true"
                     android:paddingStart="12dp"
                     android:paddingEnd="12dp"
-                    android:paddingBottom="4dp"
                     android:src="@drawable/ic_search"
                     app:tint="@android:color/black" />
 
@@ -90,9 +90,7 @@
 
     </com.google.android.material.appbar.AppBarLayout>
 
-
     <androidx.viewpager2.widget.ViewPager2
-
         android:id="@+id/viewpager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
