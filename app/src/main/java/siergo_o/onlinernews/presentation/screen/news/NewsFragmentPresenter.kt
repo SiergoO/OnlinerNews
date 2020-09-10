@@ -1,26 +1,26 @@
 package siergo_o.onlinernews.presentation.screen.news;
 
-import com.ipictheaters.ipic.presentation.base.BaseMvpPresenter
 import com.ipictheaters.ipic.presentation.utils.task.MultiResultTask
 import com.ipictheaters.ipic.presentation.utils.task.SingleResultTask
 import io.reactivex.android.schedulers.AndroidSchedulers
 import siergo_o.onlinernews.domain.news.interactor.LoadNewsFeedInteractor
+import siergo_o.onlinernews.domain.news.interactor.Search
 import siergo_o.onlinernews.domain.news.interactor.SearchNewsInteractor
+import siergo_o.onlinernews.domain.news.model.Feed
 import siergo_o.onlinernews.domain.news.model.RssFeed
 import siergo_o.onlinernews.domain.news.model.RssItem
 import siergo_o.onlinernews.presentation.screen.SearchNewsProvider
-import siergo_o.onlinernews.presentation.screen.home.HomeFragmentPresenter
 import siergo_o.onlinernews.presentation.utils.ObservableValue
 import siergo_o.onlinernews.presentation.utils.Result
 import siergo_o.onlinernews.presentation.utils.asRxObservable
 import siergo_o.onlinernews.presentation.utils.asRxSingle
 
 class NewsFragmentPresenter(
-        private val tab: NewsFragmentContract.TAB,
-        private val feed: RssFeed,
         private val searchNewsInteractor: SearchNewsInteractor,
-        private val loadNewsFeedInteractor: LoadNewsFeedInteractor) :
-        BaseMvpPresenter<NewsFragmentContract.Ui, NewsFragmentContract.Presenter.State>(), NewsFragmentContract.Presenter, SearchNewsProvider {
+        private val loadNewsFeedInteractor: LoadNewsFeedInteractor,
+        private val feed: Feed,
+        private val search: Search
+) : NewsFragmentContract.Presenter {
 
     companion object {
         private const val FLAG_SETUP_UI = 0x0001
@@ -30,33 +30,37 @@ class NewsFragmentPresenter(
         private val EMPTY_STATE_LIST = listOf<RssItem>()
     }
 
-    override fun start() {
-        updateUi(FLAG_SETUP_UI)
-    }
-
-    private var feedList: RssFeed? = null
+    private var feedItems: List<RssItem> = listOf()
     private val taskLoadNewsFeed = loadNewsFeedTask()
     private var news: List<RssItem>? = null
     private val searchQuery = ObservableValue("")
     private val taskSearchNews = createSearchNewsTask()
+    private lateinit var ui: NewsFragment
+    private var index = 0
+
+    override fun start(ui: NewsFragment) {
+        this.ui = ui
+        updateUi(FLAG_SETUP_UI)
+    }
 
     override fun newsRefreshed(tab: NewsFragmentContract.TAB) {
         taskLoadNewsFeed.start(LoadNewsFeedInteractor.Param(tab), Unit)
     }
 
-    override fun stateChanged(query: String) {
-        this.searchQuery.set(query)
-        taskSearchNews.start(SearchNewsInteractor.Param(searchQuery, feedList!!.channel.items), Unit)
+    fun setTab(tab: NewsFragmentContract.TAB) {
+        index = NewsFragmentContract.TAB.values().indexOf(tab)
+        feedItems = feed.feed[index]?.channel?.items ?: listOf()
+        taskSearchNews.start(SearchNewsInteractor.Param(searchQuery, feedItems), Unit)
+        search.observe { searchQuery.set(it) }
+        updateUi(FLAG_SETUP_UI)
     }
 
     private fun updateUi(flags: Int) {
         if (0 != (flags and FLAG_SETUP_UI)) {
-            if (feedList != null) {
-                ui.setData(feedList!!.channel.items)
-            } else ui.setData(feed.channel.items)
+            ui.setData(feedItems)
         }
         if (0 != (flags and FLAG_SET_STATES)) {
-            ui.setStates(news?: EMPTY_STATE_LIST)
+            ui.setStates(news ?: EMPTY_STATE_LIST)
         }
         ui.showLoading(taskLoadNewsFeed.isRunning())
     }
@@ -66,7 +70,7 @@ class NewsFragmentPresenter(
             error: Throwable?
     ) {
         if (data != null) {
-            feedList = data.feed
+            feed.feed[index] = data.feed
         } else if (error != null) {
             throw Exception()
         }

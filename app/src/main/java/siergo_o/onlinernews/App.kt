@@ -1,19 +1,12 @@
 package siergo_o.onlinernews;
 
-import android.app.Application
-import siergo_o.onlinernews.di.component.AppComponent
+import dagger.android.AndroidInjector
+import dagger.android.DaggerApplication
 import siergo_o.onlinernews.di.component.DaggerAppComponent
 
-class App : Application() {
+class App : DaggerApplication() {
 
-    companion object {
-        lateinit var component: AppComponent
+    override fun applicationInjector(): AndroidInjector<out DaggerApplication> {
+        return DaggerAppComponent.builder().application(this).build()
     }
-
-    override fun onCreate() {
-        super.onCreate()
-        component = buildComponent()
-    }
-
-    private fun buildComponent(): AppComponent = DaggerAppComponent.builder().application(this).build()
 }

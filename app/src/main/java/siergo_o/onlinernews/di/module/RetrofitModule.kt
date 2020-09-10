@@ -6,6 +6,7 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.simplexml.SimpleXmlConverterFactory
+import siergo_o.onlinernews.data.rest.OnlinerApi
 import java.util.concurrent.TimeUnit
 import javax.inject.Named
 import javax.inject.Singleton
@@ -29,20 +30,20 @@ class RetrofitModule {
     @Provides
     @Singleton
     @Named("tech")
-    fun provideTechRetrofit(okHttpClient: OkHttpClient): Retrofit =
-            createRetrofit(okHttpClient, "tech")
+    fun provideTechRetrofit(okHttpClient: OkHttpClient): OnlinerApi =
+            createRetrofit(okHttpClient, "tech").create(OnlinerApi::class.java)
 
     @Provides
     @Singleton
     @Named("people")
-    fun providePeopleRetrofit(okHttpClient: OkHttpClient): Retrofit =
-            createRetrofit(okHttpClient, "people")
+    fun providePeopleRetrofit(okHttpClient: OkHttpClient): OnlinerApi =
+            createRetrofit(okHttpClient, "people").create(OnlinerApi::class.java)
 
     @Provides
     @Singleton
     @Named("auto")
-    fun provideAutoRetrofit(okHttpClient: OkHttpClient): Retrofit =
-            createRetrofit(okHttpClient, "auto")
+    fun provideAutoRetrofit(okHttpClient: OkHttpClient): OnlinerApi =
+            createRetrofit(okHttpClient, "auto").create(OnlinerApi::class.java)
 
     private fun createRetrofit(okHttpClient: OkHttpClient, site: String): Retrofit =
             Retrofit.Builder()

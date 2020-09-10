@@ -3,15 +3,19 @@ package siergo_o.onlinernews.di.component
 import android.app.Application
 import dagger.BindsInstance
 import dagger.Component
-import siergo_o.onlinernews.data.rest.OnlinerApiFactory
+import dagger.android.AndroidInjectionModule
+import dagger.android.AndroidInjector
+import siergo_o.onlinernews.App
+import siergo_o.onlinernews.di.module.BuildersModule
+import siergo_o.onlinernews.di.module.DomainModule
+import siergo_o.onlinernews.di.module.PresenterModule
 import siergo_o.onlinernews.di.module.RetrofitModule
-import siergo_o.onlinernews.presentation.screen.MainActivity
 import javax.inject.Singleton
 
 @Singleton
-@Component(modules = [RetrofitModule::class])
+@Component(modules = [RetrofitModule::class, PresenterModule::class, DomainModule::class, BuildersModule::class, AndroidInjectionModule::class])
 
-interface AppComponent {
+interface AppComponent : AndroidInjector<App> {
 
     @Component.Builder
     interface Builder {
@@ -21,7 +25,4 @@ interface AppComponent {
 
         fun build(): AppComponent
     }
-
-    fun inject(activity: MainActivity)
-    fun inject(onlinerApiFactory: OnlinerApiFactory)
 }

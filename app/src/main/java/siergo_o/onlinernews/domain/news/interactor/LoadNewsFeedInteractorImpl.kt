@@ -16,5 +16,4 @@ class LoadNewsFeedInteractorImpl(private val newsRepository: NewsRepository) : L
                 }
                 Single.just(LoadNewsFeedInteractor.Result(news))
             }.subscribeOn(Schedulers.io())
-
 }

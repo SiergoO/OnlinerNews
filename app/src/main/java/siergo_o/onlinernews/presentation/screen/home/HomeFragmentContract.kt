@@ -4,14 +4,17 @@ import siergo_o.onlinernews.domain.news.model.RssFeed
 import siergo_o.onlinernews.presentation.base.BaseMvpContract
 
 interface HomeFragmentContract {
-    interface Ui : BaseMvpContract.Ui {
+    interface Ui {
         fun setViewPager(news: List<RssFeed>)
         fun showLoading(show: Boolean)
     }
 
-    interface Presenter : BaseMvpContract.Presenter<Ui, Presenter.State> {
+    interface Presenter {
 
-        interface State : BaseMvpContract.Presenter.State {
+        fun start(ui: HomeFragment)
+        fun search(query: String)
+
+        interface State {
 
         }
     }

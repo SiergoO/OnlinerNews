@@ -1,17 +1,20 @@
 package siergo_o.onlinernews.presentation.screen.home
 
-import android.content.Context
-import com.ipictheaters.ipic.presentation.base.BaseMvpPresenter
 import com.ipictheaters.ipic.presentation.utils.task.SingleResultTask
 import io.reactivex.android.schedulers.AndroidSchedulers
 import siergo_o.onlinernews.domain.news.interactor.LoadAllNewsInteractor
+import siergo_o.onlinernews.domain.news.interactor.Search
+import siergo_o.onlinernews.domain.news.model.Feed
 import siergo_o.onlinernews.domain.news.model.RssFeed
+import siergo_o.onlinernews.presentation.screen.news.NewsFragmentContract
 import siergo_o.onlinernews.presentation.utils.asRxSingle
+import java.lang.Exception
 
 class HomeFragmentPresenter(
-        private val context: Context,
-        private val loadAllNewsInteractor: LoadAllNewsInteractor
-) : BaseMvpPresenter<HomeFragmentContract.Ui, HomeFragmentContract.Presenter.State>(), HomeFragmentContract.Presenter {
+        private val loadAllNewsInteractor: LoadAllNewsInteractor,
+        private val feed: Feed,
+        private val search: Search
+) : HomeFragmentContract.Presenter {
 
     companion object {
         private const val FLAG_SETUP_HOME_UI = 0x0001
@@ -19,17 +22,23 @@ class HomeFragmentPresenter(
     }
 
     private val taskLoadNews = loadNewsTask()
-    private var feedList: List<RssFeed>? = null
+    private lateinit var ui: HomeFragment
 
-    override fun start() {
-        taskLoadNews.start(LoadAllNewsInteractor.Param(), Unit)
-        updateUi(0)
+    override fun start(ui: HomeFragment) {
+        this.ui = ui
+        if (feed.feed.isEmpty()) {
+            taskLoadNews.start(LoadAllNewsInteractor.Param(), Unit)
+        }
+    }
+
+    override fun search(query: String) {
+        search.search(query)
     }
 
     private fun updateUi(flags: Int) {
         if (0 != (flags and FLAG_SETUP_HOME_UI)) {
-            if (feedList != null) {
-                ui.setViewPager(feedList!!)
+            if (feed.feed.isNotEmpty()) {
+                ui.setViewPager(feed.feed.values.asSequence().toList())
             }
         }
         ui.showLoading(taskLoadNews.isRunning())
@@ -40,9 +49,11 @@ class HomeFragmentPresenter(
             error: Throwable?
     ) {
         if (data != null) {
-            feedList = data.feed
+            feed.feed[0] = data.feed[0]
+            feed.feed[1] = data.feed[1]
+            feed.feed[2] = data.feed[2]
         } else if (error != null) {
-            throw Exception() // TODO
+            throw Exception()
         }
         updateUi(FLAG_SETUP_HOME_UI)
     }
