@@ -10,9 +10,5 @@ interface HomeFragmentContract {
 
     interface Presenter {
         fun search(query: String)
-
-        interface State {
-
-        }
     }
 }

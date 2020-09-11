@@ -56,10 +56,6 @@ class NewsFragment :
         newsAdapter.set(posts)
     }
 
-    override fun setStates(posts: List<RssItem>) {
-        newsAdapter.set(posts)
-    }
-
     override fun showError(error: String) {
         Toast.makeText(context, error, Toast.LENGTH_LONG).show()
     }

@@ -9,18 +9,11 @@ interface NewsFragmentContract : BaseMvpContract {
         fun setData(posts: List<RssItem>)
         fun showError(error: String)
         fun showLoading(show: Boolean)
-        fun setStates(posts: List<RssItem>)
-
     }
 
     interface Presenter {
-
         fun start(ui: NewsFragment)
         fun newsRefreshed(tab: TAB)
-
-        interface State {
-
-        }
     }
 
     enum class TAB {
