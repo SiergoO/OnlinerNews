@@ -6,14 +6,11 @@ import dagger.Component
 import dagger.android.AndroidInjectionModule
 import dagger.android.AndroidInjector
 import siergo_o.onlinernews.App
-import siergo_o.onlinernews.di.module.BuildersModule
-import siergo_o.onlinernews.di.module.DomainModule
-import siergo_o.onlinernews.di.module.PresenterModule
-import siergo_o.onlinernews.di.module.RetrofitModule
+import siergo_o.onlinernews.di.module.*
 import javax.inject.Singleton
 
 @Singleton
-@Component(modules = [RetrofitModule::class, PresenterModule::class, DomainModule::class, BuildersModule::class, AndroidInjectionModule::class])
+@Component(modules = [RetrofitModule::class, PresenterModule::class, DomainModule::class, AdapterModule::class, BuildersModule::class, AndroidInjectionModule::class])
 
 interface AppComponent : AndroidInjector<App> {
 

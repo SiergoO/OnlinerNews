@@ -25,8 +25,8 @@ class DomainModule {
             @Named("tech") tech: OnlinerApi,
             @Named("people") people: OnlinerApi,
             @Named("auto") auto: OnlinerApi
-    ): LoadNewsFeedInteractor =
-            LoadNewsFeedInteractorImpl(NewsRepositoryImpl(tech, people, auto))
+    ): LoadThematicNewsInteractor =
+            LoadThematicNewsInteractorImpl(NewsRepositoryImpl(tech, people, auto))
 
     @Provides
     @Singleton

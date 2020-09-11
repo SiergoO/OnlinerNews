@@ -3,7 +3,7 @@ package siergo_o.onlinernews.presentation.screen.news;
 import com.ipictheaters.ipic.presentation.utils.task.MultiResultTask
 import com.ipictheaters.ipic.presentation.utils.task.SingleResultTask
 import io.reactivex.android.schedulers.AndroidSchedulers
-import siergo_o.onlinernews.domain.news.interactor.LoadNewsFeedInteractor
+import siergo_o.onlinernews.domain.news.interactor.LoadThematicNewsInteractor
 import siergo_o.onlinernews.domain.news.interactor.Search
 import siergo_o.onlinernews.domain.news.interactor.SearchNewsInteractor
 import siergo_o.onlinernews.domain.news.model.Feed
@@ -15,78 +15,69 @@ import siergo_o.onlinernews.presentation.utils.asRxSingle
 
 class NewsFragmentPresenter(
         private val searchNewsInteractor: SearchNewsInteractor,
-        private val loadNewsFeedInteractor: LoadNewsFeedInteractor,
+        private val loadThematicNewsInteractor: LoadThematicNewsInteractor,
         private val feed: Feed,
         private val search: Search
 ) : NewsFragmentContract.Presenter {
 
     companion object {
-        private const val FLAG_SETUP_UI = 0x0001
-        private const val FLAG_SET_STATES = 0x0002
-        private const val TASK_LOAD_NEWS_FEED = "sendDiningCheckReceipt"
-        private const val TASK_SEARCH_NEWS = "loadNews"
-        private val EMPTY_STATE_LIST = listOf<RssItem>()
+        private const val TASK_LOAD_THEMATIC_NEWS = "loadThematicNews"
+        private const val TASK_SEARCH_NEWS = "searchNews"
     }
 
-    private var feedItems: List<RssItem> = listOf()
-    private val taskLoadNewsFeed = loadNewsFeedTask()
-    private var news: List<RssItem>? = null
-    private val searchQuery = ObservableValue("")
-    private val taskSearchNews = createSearchNewsTask()
     private lateinit var ui: NewsFragment
+    private val taskLoadNewsFeed = loadThematicNewsTask()
+    private val taskSearchNews = createSearchNewsTask()
+    private val searchQuery = ObservableValue("")
+    private var news: List<RssItem> = listOf()
     private var index = 0
 
     override fun start(ui: NewsFragment) {
         this.ui = ui
-        updateUi(FLAG_SETUP_UI)
+        updateUi()
     }
 
     override fun newsRefreshed(tab: NewsFragmentContract.TAB) {
-        taskLoadNewsFeed.start(LoadNewsFeedInteractor.Param(tab), Unit)
+        taskLoadNewsFeed.start(LoadThematicNewsInteractor.Param(tab), Unit)
     }
 
-    fun setTab(tab: NewsFragmentContract.TAB) {
+    fun setCurrentTab(tab: NewsFragmentContract.TAB) {
         index = NewsFragmentContract.TAB.values().indexOf(tab)
-        feedItems = feed.feed[index]?.channel?.items ?: listOf()
-        taskSearchNews.start(SearchNewsInteractor.Param(searchQuery, feedItems), Unit)
+        news = feed.feed[index]?.channel?.items ?: listOf()
+        taskSearchNews.start(SearchNewsInteractor.Param(searchQuery, news), Unit)
         search.observe { searchQuery.set(it) }
-        updateUi(FLAG_SETUP_UI)
+        updateUi()
     }
 
-    private fun updateUi(flags: Int) {
-        if (0 != (flags and FLAG_SETUP_UI)) {
-            ui.setData(feedItems)
-        }
-        if (0 != (flags and FLAG_SET_STATES)) {
-            ui.setStates(news ?: EMPTY_STATE_LIST)
-        }
+    private fun updateUi() {
+        ui.setData(news)
         ui.showLoading(taskLoadNewsFeed.isRunning())
     }
 
-    private fun handleLoadNews(
-            data: LoadNewsFeedInteractor.Result?,
+    private fun handleLoadNewsResult(
+            data: LoadThematicNewsInteractor.Result?,
             error: Throwable?
     ) {
         if (data != null) {
             feed.feed[index] = data.feed
         } else if (error != null) {
-            throw Exception()
+            ui.showError(error.message.toString())
         }
-        updateUi(FLAG_SETUP_UI)
+        updateUi()
     }
 
-    private fun loadNewsFeedTask() =
-            SingleResultTask<LoadNewsFeedInteractor.Param, LoadNewsFeedInteractor.Result, Unit>(
-                    TASK_LOAD_NEWS_FEED,
-                    { param: LoadNewsFeedInteractor.Param, _: Unit ->
-                        loadNewsFeedInteractor.asRxSingle(param)
+    private fun loadThematicNewsTask() =
+            SingleResultTask<LoadThematicNewsInteractor.Param, LoadThematicNewsInteractor.Result, Unit>(
+                    TASK_LOAD_THEMATIC_NEWS,
+                    { param: LoadThematicNewsInteractor.Param, _: Unit ->
+                        loadThematicNewsInteractor.asRxSingle(param)
                                 .observeOn(AndroidSchedulers.mainThread())
                     },
-                    { result: LoadNewsFeedInteractor.Result, _: Unit ->
-                        handleLoadNews(result, null)
+                    { result: LoadThematicNewsInteractor.Result, _: Unit ->
+                        handleLoadNewsResult(result, null)
                     },
                     { error: Throwable, _: Unit ->
-                        handleLoadNews(null, error)
+                        handleLoadNewsResult(null, error)
                     }
             )
 
@@ -97,10 +88,10 @@ class NewsFragmentPresenter(
                     result.result.value
                 }
                 is Result.Error -> {
-                    EMPTY_STATE_LIST
+                    listOf()
                 }
             }
-            updateUi(FLAG_SET_STATES)
+            updateUi()
         }
     }
 

@@ -16,12 +16,11 @@ class HomeFragmentPresenter(
 ) : BasePresenter, HomeFragmentContract.Presenter {
 
     companion object {
-        private const val FLAG_SETUP_HOME_UI = 0x0001
         private const val TASK_LOAD_ALL_NEWS = "loadAllNews"
     }
 
-    private val taskLoadAllNews = loadAllNewsTask()
     private lateinit var ui: HomeFragment
+    private val taskLoadAllNews = loadAllNewsTask()
 
     override fun start(ui: DaggerFragment) {
         this.ui = ui as HomeFragment
@@ -34,11 +33,9 @@ class HomeFragmentPresenter(
         search.search(query)
     }
 
-    private fun updateUi(flags: Int) {
-        if (0 != (flags and FLAG_SETUP_HOME_UI)) {
-            if (feed.feed.isNotEmpty()) {
-                ui.setViewPager(feed.feed.values.asSequence().toList())
-            }
+    private fun updateUi() {
+        if (feed.feed.isNotEmpty()) {
+            ui.setViewPager(feed.feed.values.asSequence().toList())
         }
         ui.showLoading(taskLoadAllNews.isRunning())
     }
@@ -53,7 +50,7 @@ class HomeFragmentPresenter(
         } else if (error != null) {
             ui.showError(error.message.toString())
         }
-        updateUi(FLAG_SETUP_HOME_UI)
+        updateUi()
     }
 
     private fun loadAllNewsTask() =

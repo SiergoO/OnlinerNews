@@ -7,7 +7,7 @@ interface NewsFragmentContract : BaseMvpContract {
 
     interface Ui {
         fun setData(posts: List<RssItem>)
-        fun showToast()
+        fun showError(error: String)
         fun showLoading(show: Boolean)
         fun setStates(posts: List<RssItem>)
 

@@ -21,12 +21,14 @@ class HomeFragment : DaggerFragment(), BaseFragment, HomeFragmentContract.Ui {
     @Inject
     lateinit var homeFragmentPresenter: HomeFragmentPresenter
     private var _viewBinding: FragmentHomeBinding? = null
-    private val viewBinding: FragmentHomeBinding get() = _viewBinding!!
+    private val viewBinding: FragmentHomeBinding
+        get() = _viewBinding!!
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View =
             FragmentHomeBinding.inflate(inflater, container, false).also { _viewBinding = it }.root
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        homeFragmentPresenter.start(this)
         viewBinding.layoutContent.apply {
             buttonSearch.setOnClickListener {
                 it.visibility = View.GONE
@@ -51,7 +53,6 @@ class HomeFragment : DaggerFragment(), BaseFragment, HomeFragmentContract.Ui {
                 }
             }
         }
-        homeFragmentPresenter.start(this@HomeFragment)
         super.onViewCreated(view, savedInstanceState)
     }
 
