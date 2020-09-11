@@ -48,7 +48,8 @@ class HomeFragmentPresenter(
             error: Throwable?
     ) {
         if (data != null) {
-            feed.feed.forEach { data.feed[it.key] }
+            for (i in data.feed.indices)
+                feed.feed[i] = data.feed[i]
         } else if (error != null) {
             ui.showError(error.message.toString())
         }

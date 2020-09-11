@@ -16,17 +16,17 @@ import javax.inject.Inject
 
 class HomeFragment : DaggerFragment(), BaseFragment, HomeFragmentContract.Ui {
 
-    private var _viewBinding: FragmentHomeBinding? = null
-    private val viewBinding: FragmentHomeBinding get() = _viewBinding!!
     @Inject
     lateinit var homeFragmentPresenter: HomeFragmentPresenter
+    private var _viewBinding: FragmentHomeBinding? = null
+    private val viewBinding: FragmentHomeBinding get() = _viewBinding!!
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View =
             FragmentHomeBinding.inflate(inflater, container, false).also { _viewBinding = it }.root
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
         homeFragmentPresenter.start(this)
+        super.onViewCreated(view, savedInstanceState)
     }
 
     override fun setViewPager(news: List<RssFeed>) {
