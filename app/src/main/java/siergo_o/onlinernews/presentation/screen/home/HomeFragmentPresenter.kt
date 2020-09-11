@@ -23,6 +23,7 @@ class HomeFragmentPresenter(
         if (feed.feed.isEmpty()) {
             taskLoadAllNews.start(LoadAllNewsInteractor.Param())
         }
+        updateUi()
     }
 
     override fun search(query: String) {

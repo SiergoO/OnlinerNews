@@ -1,6 +1,6 @@
 package siergo_o.onlinernews.presentation.screen.news;
 
-import com.ipictheaters.ipic.presentation.utils.task.MultiResultTask
+import siergo_o.onlinernews.presentation.utils.MultiResultTask
 import siergo_o.onlinernews.presentation.utils.SingleResultTask
 import io.reactivex.android.schedulers.AndroidSchedulers
 import siergo_o.onlinernews.domain.news.interactor.LoadThematicNewsInteractor
@@ -12,7 +12,6 @@ import siergo_o.onlinernews.presentation.utils.ObservableValue
 import siergo_o.onlinernews.presentation.utils.Result
 import siergo_o.onlinernews.presentation.utils.asRxObservable
 import siergo_o.onlinernews.presentation.utils.asRxSingle
-import javax.annotation.meta.When
 
 class NewsFragmentPresenter(
     private val searchNewsInteractor: SearchNewsInteractor,
@@ -20,10 +19,6 @@ class NewsFragmentPresenter(
     private val feed: Feed,
     private val search: Search
 ) : NewsFragmentContract.Presenter {
-
-    companion object {
-        private const val TASK_SEARCH_NEWS = "searchNews"
-    }
 
     private lateinit var ui: NewsFragment
     private val taskLoadNewsFeed = loadThematicNewsTask()
@@ -44,7 +39,7 @@ class NewsFragmentPresenter(
     fun setCurrentTab(tab: NewsFragmentContract.TAB) {
         index = NewsFragmentContract.TAB.values().indexOf(tab)
         news = feed.feed[index]?.channel?.items ?: listOf()
-        taskSearchNews.start(SearchNewsInteractor.Param(searchQuery, news), Unit)
+        taskSearchNews.start(SearchNewsInteractor.Param(searchQuery, news))
         search.observe { searchQuery.set(it) }
         updateUi()
     }
@@ -94,16 +89,12 @@ class NewsFragmentPresenter(
     }
 
     private fun createSearchNewsTask() =
-        MultiResultTask<SearchNewsInteractor.Param, SearchNewsInteractor.Result, Unit>(
-            TASK_SEARCH_NEWS,
-            { param, _ ->
+        MultiResultTask<SearchNewsInteractor.Param, SearchNewsInteractor.Result>(
+            { param ->
                 searchNewsInteractor.asRxObservable(param)
                     .observeOn(AndroidSchedulers.mainThread())
             },
-            { data, _ ->
+            { data ->
                 handleSearchNewsResult(data)
-            },
-            { error, _ ->
-//                        log.e(error, "Failed to search states. Actually, this should never happens")
             })
 }
