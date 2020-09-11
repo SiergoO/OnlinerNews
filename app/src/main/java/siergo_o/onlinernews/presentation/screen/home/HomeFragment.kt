@@ -12,6 +12,8 @@ import siergo_o.onlinernews.databinding.FragmentHomeBinding
 import siergo_o.onlinernews.domain.news.model.RssFeed
 import siergo_o.onlinernews.presentation.screen.BaseFragment
 import siergo_o.onlinernews.presentation.utils.SimpleTextWatcher
+import siergo_o.onlinernews.presentation.utils.hideKeyboard
+import siergo_o.onlinernews.presentation.utils.showKeyboard
 import javax.inject.Inject
 
 class HomeFragment : DaggerFragment(), BaseFragment, HomeFragmentContract.Ui {
@@ -25,8 +27,38 @@ class HomeFragment : DaggerFragment(), BaseFragment, HomeFragmentContract.Ui {
             FragmentHomeBinding.inflate(inflater, container, false).also { _viewBinding = it }.root
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        homeFragmentPresenter.start(this)
+        viewBinding.layoutContent.apply {
+            buttonSearch.setOnClickListener {
+                it.visibility = View.GONE
+                toolbar.apply {
+                    setNavigationIcon(R.drawable.ic_arrow_back)
+                    setNavigationOnClickListener {
+                        navigationIcon = null
+                        searchNews.apply {
+                            text = null
+                            visibility = View.GONE
+                            hideKeyboard(context, view)
+                        }
+                        buttonSearch.visibility = View.VISIBLE
+                        onlinerLogo.visibility = View.VISIBLE
+                    }
+                }
+                onlinerLogo.visibility = View.GONE
+                searchNews.apply {
+                    addTextChangedListener(searchTextWatcher)
+                    visibility = View.VISIBLE
+                    showKeyboard(context, view)
+                }
+            }
+        }
+        homeFragmentPresenter.start(this@HomeFragment)
         super.onViewCreated(view, savedInstanceState)
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        viewBinding.layoutContent.searchNews.removeTextChangedListener(searchTextWatcher)
+        _viewBinding = null
     }
 
     override fun setViewPager(news: List<RssFeed>) {
@@ -41,16 +73,6 @@ class HomeFragment : DaggerFragment(), BaseFragment, HomeFragmentContract.Ui {
                     else -> ""
                 }
             }.attach()
-            buttonSearch.setOnClickListener {
-                this.apply {
-                    onlinerLogo.visibility = View.GONE
-                    searchNews.apply {
-                        addTextChangedListener(searchTextWatcher)
-                        visibility = View.VISIBLE
-                        requestFocus()
-                    }
-                }
-            }
         }
     }
 
