@@ -5,19 +5,15 @@ import siergo_o.onlinernews.presentation.base.BaseMvpContract
 
 interface NewsFragmentContract : BaseMvpContract {
 
-    interface Ui : BaseMvpContract.Ui {
+    interface Ui {
         fun setData(posts: List<RssItem>)
-        fun showToast()
+        fun showError(error: String)
         fun showLoading(show: Boolean)
     }
 
-    interface Presenter : BaseMvpContract.Presenter<Ui, Presenter.State> {
-
+    interface Presenter {
+        fun start(ui: NewsFragment)
         fun newsRefreshed(tab: TAB)
-
-        interface State : BaseMvpContract.Presenter.State {
-
-        }
     }
 
     enum class TAB {

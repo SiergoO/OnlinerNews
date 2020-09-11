@@ -25,13 +25,13 @@ class NewsAdapter : RecyclerView.Adapter<NewsAdapter.ViewHolder>() {
     private var _viewBinding: ItemNewsBinding? = null
     private val viewBinding: ItemNewsBinding
         get() = _viewBinding!!
-    private var posts: List<RssItem>? = null
+    private var posts: List<RssItem> = listOf()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder =
             ViewHolder(ItemNewsBinding.inflate(LayoutInflater.from(parent.context), parent, false).also { _viewBinding = it })
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val post = posts!![position]
+        val post = posts[position]
         holder.itemView.visibility = View.GONE
         Picasso.get().load(post.imageUrl.replace("thumbnail", "1400x5616")).into(holder.image, object : Callback {
             override fun onSuccess() {
@@ -52,7 +52,7 @@ class NewsAdapter : RecyclerView.Adapter<NewsAdapter.ViewHolder>() {
         })
     }
 
-    override fun getItemCount(): Int = posts!!.size
+    override fun getItemCount(): Int = posts.size
 
     fun set(posts: List<RssItem>) {
         this.posts = posts

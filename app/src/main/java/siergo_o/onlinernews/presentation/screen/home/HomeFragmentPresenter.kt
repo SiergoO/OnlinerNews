@@ -1,37 +1,43 @@
 package siergo_o.onlinernews.presentation.screen.home
 
-import com.ipictheaters.ipic.presentation.base.BaseMvpPresenter
 import com.ipictheaters.ipic.presentation.utils.task.SingleResultTask
+import dagger.android.support.DaggerFragment
 import io.reactivex.android.schedulers.AndroidSchedulers
 import siergo_o.onlinernews.domain.news.interactor.LoadAllNewsInteractor
-import siergo_o.onlinernews.domain.news.model.RssFeed
+import siergo_o.onlinernews.domain.news.interactor.Search
+import siergo_o.onlinernews.domain.news.model.Feed
+import siergo_o.onlinernews.presentation.screen.BasePresenter
 import siergo_o.onlinernews.presentation.utils.asRxSingle
-import java.lang.Exception
 
 class HomeFragmentPresenter(
-        private val loadAllNewsInteractor: LoadAllNewsInteractor
-) : BaseMvpPresenter<HomeFragmentContract.Ui, HomeFragmentContract.Presenter.State>(), HomeFragmentContract.Presenter {
+        private val loadAllNewsInteractor: LoadAllNewsInteractor,
+        private val feed: Feed,
+        private val search: Search
+) : BasePresenter, HomeFragmentContract.Presenter {
 
     companion object {
-        private const val FLAG_SETUP_HOME_UI = 0x0001
-        private const val TASK_LOAD_NEWS = "loadNews"
+        private const val TASK_LOAD_ALL_NEWS = "loadAllNews"
     }
 
-    private val taskLoadNews = loadNewsTask()
-    private var feedList: List<RssFeed>? = null
+    private lateinit var ui: HomeFragment
+    private val taskLoadAllNews = loadAllNewsTask()
 
-    override fun start() {
-        taskLoadNews.start(LoadAllNewsInteractor.Param(), Unit)
-        updateUi(0)
-    }
-
-    private fun updateUi(flags: Int) {
-        if (0 != (flags and FLAG_SETUP_HOME_UI)) {
-            if (feedList != null) {
-                ui.setViewPager(feedList!!)
-            }
+    override fun start(ui: DaggerFragment) {
+        this.ui = ui as HomeFragment
+        if (feed.feed.isEmpty()) {
+            taskLoadAllNews.start(LoadAllNewsInteractor.Param(), Unit)
         }
-        ui.showLoading(taskLoadNews.isRunning())
+    }
+
+    override fun search(query: String) {
+        search.search(query)
+    }
+
+    private fun updateUi() {
+        if (feed.feed.isNotEmpty()) {
+            ui.setViewPager(feed.feed.values.asSequence().toList())
+        }
+        ui.showLoading(taskLoadAllNews.isRunning())
     }
 
     private fun handleLoadNews(
@@ -39,16 +45,17 @@ class HomeFragmentPresenter(
             error: Throwable?
     ) {
         if (data != null) {
-            feedList = data.feed
+            for (i in data.feed.indices)
+                feed.feed[i] = data.feed[i]
         } else if (error != null) {
-            throw Exception() // TODO
+            ui.showError(error.message.toString())
         }
-        updateUi(FLAG_SETUP_HOME_UI)
+        updateUi()
     }
 
-    private fun loadNewsTask() =
+    private fun loadAllNewsTask() =
             SingleResultTask<LoadAllNewsInteractor.Param, LoadAllNewsInteractor.Result, Unit>(
-                    TASK_LOAD_NEWS,
+                    TASK_LOAD_ALL_NEWS,
                     { param: LoadAllNewsInteractor.Param, _: Unit ->
                         loadAllNewsInteractor.asRxSingle(param)
                                 .observeOn(AndroidSchedulers.mainThread())
