@@ -1,6 +1,6 @@
 package siergo_o.onlinernews.presentation.screen.home
 
-import com.ipictheaters.ipic.presentation.utils.task.SingleResultTask
+import siergo_o.onlinernews.presentation.utils.SingleResultTask
 import dagger.android.support.DaggerFragment
 import io.reactivex.android.schedulers.AndroidSchedulers
 import siergo_o.onlinernews.domain.news.interactor.LoadAllNewsInteractor
@@ -10,14 +10,10 @@ import siergo_o.onlinernews.presentation.screen.BasePresenter
 import siergo_o.onlinernews.presentation.utils.asRxSingle
 
 class HomeFragmentPresenter(
-        private val loadAllNewsInteractor: LoadAllNewsInteractor,
-        private val feed: Feed,
-        private val search: Search
+    private val loadAllNewsInteractor: LoadAllNewsInteractor,
+    private val feed: Feed,
+    private val search: Search
 ) : BasePresenter, HomeFragmentContract.Presenter {
-
-    companion object {
-        private const val TASK_LOAD_ALL_NEWS = "loadAllNews"
-    }
 
     private lateinit var ui: HomeFragment
     private val taskLoadAllNews = loadAllNewsTask()
@@ -25,7 +21,7 @@ class HomeFragmentPresenter(
     override fun start(ui: DaggerFragment) {
         this.ui = ui as HomeFragment
         if (feed.feed.isEmpty()) {
-            taskLoadAllNews.start(LoadAllNewsInteractor.Param(), Unit)
+            taskLoadAllNews.start(LoadAllNewsInteractor.Param())
         }
     }
 
@@ -41,30 +37,27 @@ class HomeFragmentPresenter(
     }
 
     private fun handleLoadNews(
-            data: LoadAllNewsInteractor.Result?,
-            error: Throwable?
+        data: LoadAllNewsInteractor.Result?,
+        error: Throwable?
     ) {
-        if (data != null) {
-            for (i in data.feed.indices)
-                feed.feed[i] = data.feed[i]
-        } else if (error != null) {
-            ui.showError(error.message.toString())
+        when {
+            data != null -> for (i in data.feed.indices) feed.feed[i] = data.feed[i]
+            error != null -> ui.showError(error.message.toString())
         }
         updateUi()
     }
 
     private fun loadAllNewsTask() =
-            SingleResultTask<LoadAllNewsInteractor.Param, LoadAllNewsInteractor.Result, Unit>(
-                    TASK_LOAD_ALL_NEWS,
-                    { param: LoadAllNewsInteractor.Param, _: Unit ->
-                        loadAllNewsInteractor.asRxSingle(param)
-                                .observeOn(AndroidSchedulers.mainThread())
-                    },
-                    { result: LoadAllNewsInteractor.Result, _: Unit ->
-                        handleLoadNews(result, null)
-                    },
-                    { error: Throwable, _: Unit ->
-                        handleLoadNews(null, error)
-                    }
-            )
+        SingleResultTask<LoadAllNewsInteractor.Param, LoadAllNewsInteractor.Result>(
+            { param: LoadAllNewsInteractor.Param ->
+                loadAllNewsInteractor.asRxSingle(param)
+                    .observeOn(AndroidSchedulers.mainThread())
+            },
+            { result: LoadAllNewsInteractor.Result ->
+                handleLoadNews(result, null)
+            },
+            { error: Throwable ->
+                handleLoadNews(null, error)
+            }
+        )
 }
