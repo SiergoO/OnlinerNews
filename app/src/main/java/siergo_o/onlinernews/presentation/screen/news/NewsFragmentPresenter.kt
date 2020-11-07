@@ -49,14 +49,13 @@ class NewsFragmentPresenter(
         ui.showLoading(taskLoadNewsFeed.isRunning())
     }
 
-    private fun handleLoadNewsResult(
-        data: LoadThematicNewsInteractor.Result?,
-        error: Throwable?
-    ) {
-        when {
-            data != null -> feed.feed[index] = data.feed
-            error != null -> ui.showError(error.message.toString())
-        }
+    private fun handleLoadNewsData(data: LoadThematicNewsInteractor.Result) {
+        feed.feed[index] = data.feed
+        updateUi()
+    }
+
+    private fun handleLoadNewsError(error: Throwable) {
+        ui.showError(error.message.toString())
         updateUi()
     }
 
@@ -67,22 +66,18 @@ class NewsFragmentPresenter(
                     .observeOn(AndroidSchedulers.mainThread())
             },
             { result: LoadThematicNewsInteractor.Result ->
-                handleLoadNewsResult(result, null)
+                handleLoadNewsData(result)
             },
             { error: Throwable ->
-                handleLoadNewsResult(null, error)
+                handleLoadNewsError(error)
             }
         )
 
     private fun handleSearchNewsResult(result: SearchNewsInteractor.Result) {
         if (result.search == searchQuery.get()) {
             news = when (result.result) {
-                is Result.Success -> {
-                    result.result.value
-                }
-                is Result.Error -> {
-                    listOf()
-                }
+                is Result.Success -> result.result.value
+                is Result.Error -> listOf()
             }
             updateUi()
         }
@@ -91,8 +86,7 @@ class NewsFragmentPresenter(
     private fun createSearchNewsTask() =
         MultiResultTask<SearchNewsInteractor.Param, SearchNewsInteractor.Result>(
             { param ->
-                searchNewsInteractor.asRxObservable(param)
-                    .observeOn(AndroidSchedulers.mainThread())
+                searchNewsInteractor.asRxObservable(param).observeOn(AndroidSchedulers.mainThread())
             },
             { data ->
                 handleSearchNewsResult(data)

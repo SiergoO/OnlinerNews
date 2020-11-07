@@ -15,15 +15,11 @@ private fun <P : Any, R : Any> SingleResultInteractor<P, R>.createSingle(param: 
         Single.create { emitter ->
             val interactorCallback = object : SingleResultInteractor.Callback<R> {
                 override fun onResult(result: R) {
-                    if (!emitter.isDisposed) {
-                        emitter.onSuccess(result)
-                    }
+                    emitter.onSuccess(result)
                 }
 
                 override fun onFailure(error: Throwable) {
-                    if (!emitter.isDisposed) {
-                        emitter.onError(error)
-                    }
+                    emitter.onError(error)
                 }
             }
             val cancellable = this@createSingle.execute(param, interactorCallback)
@@ -34,21 +30,15 @@ private fun <P : Any, R : Any> MultiResultInteractor<P, R>.createsObservable(par
         Observable.create { emitter ->
             val interactorCallback = object : MultiResultInteractor.Callback<R> {
                 override fun onResult(result: R) {
-                    if (!emitter.isDisposed) {
-                        emitter.onNext(result)
-                    }
+                    emitter.onNext(result)
                 }
 
                 override fun onFailure(error: Throwable) {
-                    if (!emitter.isDisposed) {
-                        emitter.onError(error)
-                    }
+                    emitter.onError(error)
                 }
 
                 override fun onComplete() {
-                    if (!emitter.isDisposed) {
-                        emitter.onComplete()
-                    }
+                    emitter.onComplete()
                 }
             }
             val cancellable = this@createsObservable.execute(param, interactorCallback)

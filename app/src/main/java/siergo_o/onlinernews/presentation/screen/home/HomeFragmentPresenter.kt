@@ -16,7 +16,7 @@ class HomeFragmentPresenter(
 ) : BasePresenter, HomeFragmentContract.Presenter {
 
     private lateinit var ui: HomeFragment
-    private val taskLoadAllNews = loadAllNewsTask()
+    private val taskLoadAllNews = createLoadAllNewsTask()
 
     override fun start(ui: DaggerFragment) {
         this.ui = ui as HomeFragment
@@ -32,33 +32,32 @@ class HomeFragmentPresenter(
 
     private fun updateUi() {
         if (feed.feed.isNotEmpty()) {
-            ui.setViewPager(feed.feed.values.asSequence().toList())
+            ui.setViewPager(feed.feed.values.toList())
         }
         ui.showLoading(taskLoadAllNews.isRunning())
     }
 
-    private fun handleLoadNews(
-        data: LoadAllNewsInteractor.Result?,
-        error: Throwable?
-    ) {
-        when {
-            data != null -> for (i in data.feed.indices) feed.feed[i] = data.feed[i]
-            error != null -> ui.showError(error.message.toString())
-        }
+    private fun handleLoadNewsData(data: LoadAllNewsInteractor.Result) {
+        for (i in data.feed.indices) feed.feed[i] = data.feed[i]
         updateUi()
     }
 
-    private fun loadAllNewsTask() =
+    private fun handleLoadNewsError(error: Throwable) {
+        ui.showError(error.message.toString())
+        updateUi()
+    }
+
+    private fun createLoadAllNewsTask() =
         SingleResultTask<LoadAllNewsInteractor.Param, LoadAllNewsInteractor.Result>(
             { param: LoadAllNewsInteractor.Param ->
                 loadAllNewsInteractor.asRxSingle(param)
                     .observeOn(AndroidSchedulers.mainThread())
             },
             { result: LoadAllNewsInteractor.Result ->
-                handleLoadNews(result, null)
+                handleLoadNewsData(result)
             },
             { error: Throwable ->
-                handleLoadNews(null, error)
+                handleLoadNewsError(error)
             }
         )
 }
