@@ -1,9 +1,8 @@
 package siergo_o.onlinernews.presentation.screen.news
 
 import siergo_o.onlinernews.domain.news.model.RssItem
-import siergo_o.onlinernews.presentation.base.BaseMvpContract
 
-interface NewsFragmentContract : BaseMvpContract {
+interface NewsFragmentContract {
 
     interface Ui {
         fun setData(posts: List<RssItem>)

@@ -1,6 +1,7 @@
 package siergo_o.onlinernews.domain.news.interactor
 
 import io.reactivex.disposables.Disposable
+import io.reactivex.schedulers.Schedulers
 import io.reactivex.subjects.PublishSubject
 import java.util.concurrent.TimeUnit
 
@@ -19,5 +20,6 @@ class Search {
     fun observe(observer: (String) -> Unit): Disposable =
             subject.debounce(SEARCH_TIMEOUT, TimeUnit.MILLISECONDS)
                     .distinctUntilChanged()
+                    .subscribeOn(Schedulers.io())
                     .subscribe { observer.invoke(it) }
 }

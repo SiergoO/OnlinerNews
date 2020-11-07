@@ -7,12 +7,11 @@ import siergo_o.onlinernews.domain.interactor.asRxObservable
 import siergo_o.onlinernews.domain.news.model.RssItem
 import siergo_o.onlinernews.presentation.utils.Result
 
-class SearchNewsInteractorImpl() : SearchNewsInteractor, RxMultiResultInteractor<SearchNewsInteractor.Param, SearchNewsInteractor.Result>() {
+class SearchNewsInteractorImpl : SearchNewsInteractor, RxMultiResultInteractor<SearchNewsInteractor.Param, SearchNewsInteractor.Result>() {
 
     override fun createObservable(param: SearchNewsInteractor.Param): Observable<SearchNewsInteractor.Result> =
             param.search.asRxObservable()
                     .observeOn(Schedulers.io())
-//                    .debounce(searchDebounceTimeout.timeout, searchDebounceTimeout.timeUnit)
                     .switchMap { item ->
                         val result: Result<List<RssItem>> =
                                 try {

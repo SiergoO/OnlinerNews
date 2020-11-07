@@ -16,7 +16,7 @@ data class RssItem(
 ) : Parcelable
 
 fun DomainRssItem.toUiModel(): UiRssItem =
-        UiRssItem(title, link, pubDate, description, imageUrl ?: "")
+        UiRssItem(title, link, pubDate, description, imageUrl)
 
 fun UiRssItem.toDomainModel(): DomainRssItem =
         DomainRssItem(title, link, pubDate, description, imageUrl)
