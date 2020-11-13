@@ -9,17 +9,17 @@ typealias UiRssItem = RssItem
 @Parcelize
 data class RssItem(
         var title: String,
-        var link: String,
-        var pubDate: String,
         var description: String,
+        var link: String,
+        var pubDate: Long,
         var imageUrl: String
 ) : Parcelable
 
 fun DomainRssItem.toUiModel(): UiRssItem =
-        UiRssItem(title, link, pubDate, description, imageUrl)
+        UiRssItem(title, description, link, pubDate, imageUrl)
 
-fun UiRssItem.toDomainModel(): DomainRssItem =
-        DomainRssItem(title, link, pubDate, description, imageUrl)
+fun toDomainModel(rssItem: DomainRssItem): DomainRssItem =
+        rssItem
 
 fun List<DomainRssItem>.toUi(): List<UiRssItem> =
         map {
@@ -28,5 +28,5 @@ fun List<DomainRssItem>.toUi(): List<UiRssItem> =
 
 fun List<UiRssItem>.toDomain(): List<DomainRssItem> =
         map {
-            it.toDomainModel()
+            toDomainModel(DomainRssItem(it.title, it.description, it.link, it.pubDate, it.imageUrl))
         }

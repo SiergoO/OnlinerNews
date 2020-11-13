@@ -13,20 +13,16 @@ class DomainModule {
     @Provides
     @Singleton
     fun provideLoadAllNewsInteractor(
-            @Named("tech") tech: OnlinerApi,
-            @Named("people") people: OnlinerApi,
-            @Named("auto") auto: OnlinerApi
+            onlinerApi: OnlinerApi
     ): LoadAllNewsInteractor =
-            LoadAllNewsInteractorImpl(NewsRepositoryImpl(tech, people, auto))
+            LoadAllNewsInteractorImpl(NewsRepositoryImpl(onlinerApi))
 
     @Provides
     @Singleton
     fun provideLoadNewsFeedInteractor(
-            @Named("tech") tech: OnlinerApi,
-            @Named("people") people: OnlinerApi,
-            @Named("auto") auto: OnlinerApi
+            onlinerApi: OnlinerApi
     ): LoadThematicNewsInteractor =
-            LoadThematicNewsInteractorImpl(NewsRepositoryImpl(tech, people, auto))
+            LoadThematicNewsInteractorImpl(NewsRepositoryImpl(onlinerApi))
 
     @Provides
     @Singleton

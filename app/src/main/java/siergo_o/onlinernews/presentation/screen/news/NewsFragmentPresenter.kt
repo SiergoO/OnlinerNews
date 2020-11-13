@@ -38,7 +38,7 @@ class NewsFragmentPresenter(
 
     fun setCurrentTab(tab: NewsFragmentContract.TAB) {
         index = NewsFragmentContract.TAB.values().indexOf(tab)
-        news = feed.feed[index]?.channel?.items ?: listOf()
+        news = feed.feed[index]?.items ?: listOf()
         taskSearchNews.start(SearchNewsInteractor.Param(searchQuery, news))
         search.observe { searchQuery.set(it) }
         updateUi()

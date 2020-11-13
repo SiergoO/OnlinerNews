@@ -1,7 +1,7 @@
 package siergo_o.onlinernews.domain.news.interactor
 
 import siergo_o.onlinernews.domain.interactor.SingleResultInteractor
-import siergo_o.onlinernews.domain.news.model.RssFeed
+import siergo_o.onlinernews.domain.news.model.RssChannel
 
 interface LoadAllNewsInteractor :
         SingleResultInteractor<LoadAllNewsInteractor.Param, LoadAllNewsInteractor.Result> {
@@ -9,6 +9,6 @@ interface LoadAllNewsInteractor :
     class Param
 
     data class Result(
-            val feed: List<RssFeed>
+            val feed: List<RssChannel>
     )
 }
