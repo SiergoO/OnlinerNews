@@ -2,9 +2,10 @@ package siergo_o.onlinernews.data.rest
 
 import retrofit2.Call
 import retrofit2.http.GET
-import siergo_o.onlinernews.data.rest.model.NetRssFeed
+import retrofit2.http.Query
+import siergo_o.onlinernews.data.rest.model.NetRssChannel
 
 interface OnlinerApi {
-    @GET("/feed")
-    fun getFeed(): Call<NetRssFeed?>?
+    @GET("convert/")
+    fun getFeed(@Query("u") url: String): Call<NetRssChannel?>?
 }

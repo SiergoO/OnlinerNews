@@ -13,8 +13,7 @@ import com.squareup.picasso.Picasso
 import siergo_o.onlinernews.R
 import siergo_o.onlinernews.databinding.ItemNewsBinding
 import siergo_o.onlinernews.domain.news.model.RssItem
-import java.lang.Exception
-import java.util.regex.Pattern
+import siergo_o.onlinernews.presentation.utils.asFormattedDate
 
 class NewsAdapter : RecyclerView.Adapter<NewsAdapter.ViewHolder>() {
 
@@ -36,8 +35,8 @@ class NewsAdapter : RecyclerView.Adapter<NewsAdapter.ViewHolder>() {
         Picasso.get().load(post.imageUrl.replace("thumbnail", "1400x5616")).into(holder.image, object : Callback {
             override fun onSuccess() {
                 holder.apply {
-                    title.text = post.title
-                    date.text = post.pubDate
+                    title.text = post.title.replace("&nbsp;", " ")
+                    date.text = post.pubDate.asFormattedDate()
                     itemView.apply {
                         visibility = View.VISIBLE
                         setOnClickListener {

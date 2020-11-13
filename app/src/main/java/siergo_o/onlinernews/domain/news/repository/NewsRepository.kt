@@ -1,10 +1,10 @@
 package siergo_o.onlinernews.domain.news.repository
 
-import siergo_o.onlinernews.domain.news.model.RssFeed
+import siergo_o.onlinernews.domain.news.model.RssChannel
 
 interface NewsRepository {
-    fun getAllNews(): List<RssFeed>
-    fun getTechNews(): RssFeed
-    fun getPeopleNews(): RssFeed
-    fun getAutoNews(): RssFeed
+    fun getAllNews(): List<RssChannel>
+    fun getTechNews(): RssChannel
+    fun getPeopleNews(): RssChannel
+    fun getAutoNews(): RssChannel
 }

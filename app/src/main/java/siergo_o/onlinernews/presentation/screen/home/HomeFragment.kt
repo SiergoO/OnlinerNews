@@ -9,7 +9,7 @@ import com.google.android.material.tabs.TabLayoutMediator
 import dagger.android.support.DaggerFragment
 import siergo_o.onlinernews.R
 import siergo_o.onlinernews.databinding.FragmentHomeBinding
-import siergo_o.onlinernews.domain.news.model.RssFeed
+import siergo_o.onlinernews.domain.news.model.RssChannel
 import siergo_o.onlinernews.presentation.screen.BaseFragment
 import siergo_o.onlinernews.presentation.utils.SimpleTextWatcher
 import siergo_o.onlinernews.presentation.utils.hideKeyboard
@@ -62,7 +62,7 @@ class HomeFragment : DaggerFragment(), BaseFragment, HomeFragmentContract.Ui {
         _viewBinding = null
     }
 
-    override fun setViewPager(news: List<RssFeed>) {
+    override fun setViewPager(news: List<RssChannel>) {
         viewBinding.layoutContent.apply {
             viewpager.adapter = ViewPagerAdapter(this@HomeFragment)
             TabLayoutMediator(this.tablayout, this.viewpager) { tab, position ->

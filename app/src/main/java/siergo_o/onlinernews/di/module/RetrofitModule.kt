@@ -5,10 +5,9 @@ import dagger.Provides
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
-import retrofit2.converter.simplexml.SimpleXmlConverterFactory
+import retrofit2.converter.gson.GsonConverterFactory
 import siergo_o.onlinernews.data.rest.OnlinerApi
 import java.util.concurrent.TimeUnit
-import javax.inject.Named
 import javax.inject.Singleton
 
 @Module
@@ -29,27 +28,14 @@ class RetrofitModule {
 
     @Provides
     @Singleton
-    @Named("tech")
     fun provideTechRetrofit(okHttpClient: OkHttpClient): OnlinerApi =
-            createRetrofit(okHttpClient, "tech").create(OnlinerApi::class.java)
+            createRetrofit(okHttpClient).create(OnlinerApi::class.java)
 
-    @Provides
-    @Singleton
-    @Named("people")
-    fun providePeopleRetrofit(okHttpClient: OkHttpClient): OnlinerApi =
-            createRetrofit(okHttpClient, "people").create(OnlinerApi::class.java)
-
-    @Provides
-    @Singleton
-    @Named("auto")
-    fun provideAutoRetrofit(okHttpClient: OkHttpClient): OnlinerApi =
-            createRetrofit(okHttpClient, "auto").create(OnlinerApi::class.java)
-
-    private fun createRetrofit(okHttpClient: OkHttpClient, site: String): Retrofit =
+    private fun createRetrofit(okHttpClient: OkHttpClient): Retrofit =
             Retrofit.Builder()
-                    .baseUrl("https://$site.onliner.by")
+                    .baseUrl("https://send-rss-get-json.herokuapp.com/")
                     .addConverterFactory(
-                            SimpleXmlConverterFactory.create()
+                            GsonConverterFactory.create()
                     )
                     .client(okHttpClient)
                     .build()
