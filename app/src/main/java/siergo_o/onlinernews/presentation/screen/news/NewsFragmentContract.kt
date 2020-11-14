@@ -11,7 +11,6 @@ interface NewsFragmentContract {
     }
 
     interface Presenter {
-        fun start(ui: NewsFragment)
         fun newsRefreshed(tab: TAB)
     }
 

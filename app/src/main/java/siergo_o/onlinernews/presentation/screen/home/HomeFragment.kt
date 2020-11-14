@@ -18,8 +18,13 @@ import javax.inject.Inject
 
 class HomeFragment : DaggerFragment(), BaseFragment, HomeFragmentContract.Ui {
 
+    companion object {
+        private const val KEY_IS_SEARCH_SHOWN = "isSearchShown"
+    }
+
     @Inject
     lateinit var homeFragmentPresenter: HomeFragmentPresenter
+    private var isSearchShown: Boolean = false
     private var _viewBinding: FragmentHomeBinding? = null
     private val viewBinding: FragmentHomeBinding
         get() = _viewBinding!!
@@ -30,27 +35,29 @@ class HomeFragment : DaggerFragment(), BaseFragment, HomeFragmentContract.Ui {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         homeFragmentPresenter.start(this)
         viewBinding.layoutContent.apply {
-            buttonSearch.setOnClickListener {
-                it.visibility = View.GONE
-                toolbar.apply {
-                    setNavigationIcon(R.drawable.ic_arrow_back)
-                    setNavigationOnClickListener {
-                        navigationIcon = null
-                        searchNews.apply {
-                            text = null
-                            visibility = View.GONE
-                            hideKeyboard(context, view)
-                        }
-                        buttonSearch.visibility = View.VISIBLE
-                        onlinerLogo.visibility = View.VISIBLE
+            toolbar.apply {
+                setNavigationOnClickListener {
+                    navigationIcon = null
+                    searchNews.apply {
+                        text = null
+                        visibility = View.GONE
+                        hideKeyboard(context, view)
                     }
+                    buttonSearch.visibility = View.VISIBLE
+                    onlinerLogo.visibility = View.VISIBLE
+                    isSearchShown = false
                 }
+            }
+            buttonSearch.setOnClickListener {
+                toolbar.setNavigationIcon(R.drawable.ic_arrow_back)
+                it.visibility = View.GONE
                 onlinerLogo.visibility = View.GONE
                 searchNews.apply {
                     addTextChangedListener(searchTextWatcher)
                     visibility = View.VISIBLE
                     showKeyboard(context, view)
                 }
+                isSearchShown = true
             }
         }
         super.onViewCreated(view, savedInstanceState)
@@ -60,6 +67,20 @@ class HomeFragment : DaggerFragment(), BaseFragment, HomeFragmentContract.Ui {
         super.onDestroyView()
         viewBinding.layoutContent.searchNews.removeTextChangedListener(searchTextWatcher)
         _viewBinding = null
+        homeFragmentPresenter.stop()
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putBoolean(KEY_IS_SEARCH_SHOWN, isSearchShown)
+    }
+
+    override fun onViewStateRestored(savedInstanceState: Bundle?) {
+        super.onViewStateRestored(savedInstanceState)
+        isSearchShown = savedInstanceState?.getBoolean(KEY_IS_SEARCH_SHOWN)?:false
+        if (isSearchShown) {
+            viewBinding.layoutContent.buttonSearch.performClick()
+        }
     }
 
     override fun setViewPager(news: List<RssChannel>) {

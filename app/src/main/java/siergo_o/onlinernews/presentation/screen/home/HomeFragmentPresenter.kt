@@ -26,6 +26,12 @@ class HomeFragmentPresenter(
         updateUi()
     }
 
+    override fun stop() {
+        if (taskLoadAllNews.isRunning()) {
+            taskLoadAllNews.stop()
+        }
+    }
+
     override fun search(query: String) {
         search.search(query)
     }

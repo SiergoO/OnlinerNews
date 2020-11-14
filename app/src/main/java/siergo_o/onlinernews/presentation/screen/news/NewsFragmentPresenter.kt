@@ -1,5 +1,6 @@
 package siergo_o.onlinernews.presentation.screen.news;
 
+import dagger.android.support.DaggerFragment
 import siergo_o.onlinernews.presentation.utils.MultiResultTask
 import siergo_o.onlinernews.presentation.utils.SingleResultTask
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -8,6 +9,7 @@ import siergo_o.onlinernews.domain.news.interactor.Search
 import siergo_o.onlinernews.domain.news.interactor.SearchNewsInteractor
 import siergo_o.onlinernews.domain.news.model.Feed
 import siergo_o.onlinernews.domain.news.model.RssItem
+import siergo_o.onlinernews.presentation.screen.BasePresenter
 import siergo_o.onlinernews.presentation.utils.ObservableValue
 import siergo_o.onlinernews.presentation.utils.Result
 import siergo_o.onlinernews.presentation.utils.asRxObservable
@@ -18,7 +20,7 @@ class NewsFragmentPresenter(
     private val loadThematicNewsInteractor: LoadThematicNewsInteractor,
     private val feed: Feed,
     private val search: Search
-) : NewsFragmentContract.Presenter {
+) : BasePresenter, NewsFragmentContract.Presenter {
 
     private lateinit var ui: NewsFragment
     private val taskLoadNewsFeed = loadThematicNewsTask()
@@ -27,9 +29,18 @@ class NewsFragmentPresenter(
     private var news: List<RssItem> = listOf()
     private var index = 0
 
-    override fun start(ui: NewsFragment) {
-        this.ui = ui
+    override fun start(ui: DaggerFragment) {
+        this.ui = ui as NewsFragment
         updateUi()
+    }
+
+    override fun stop() {
+        if (taskLoadNewsFeed.isRunning()) {
+            taskLoadNewsFeed.stop()
+        }
+        if (taskSearchNews.isRunning()) {
+            taskSearchNews.stop()
+        }
     }
 
     override fun newsRefreshed(tab: NewsFragmentContract.TAB) {

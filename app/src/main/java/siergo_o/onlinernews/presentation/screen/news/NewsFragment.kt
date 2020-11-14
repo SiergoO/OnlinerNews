@@ -9,10 +9,11 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import dagger.android.support.DaggerFragment
 import siergo_o.onlinernews.databinding.FragmentNewsBinding
 import siergo_o.onlinernews.domain.news.model.RssItem
+import siergo_o.onlinernews.presentation.screen.BaseFragment
 import javax.inject.Inject
 
 class NewsFragment :
-        DaggerFragment(), NewsFragmentContract.Ui {
+        DaggerFragment(), BaseFragment, NewsFragmentContract.Ui {
 
     companion object {
         private const val ARG_CURRENT_TAB = "currentTab"
@@ -50,6 +51,12 @@ class NewsFragment :
             }
         }
         super.onViewCreated(view, savedInstanceState)
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _viewBinding = null
+        newsFragmentPresenter.stop()
     }
 
     override fun setData(posts: List<RssItem>) {
